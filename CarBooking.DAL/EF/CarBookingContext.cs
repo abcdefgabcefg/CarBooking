@@ -8,12 +8,12 @@ using CarBooking.DAL.Entities;
 
 namespace CarBooking.DAL.EF
 {
-    public class CarBookingContex : DbContext
+    public class CarBookingContext : DbContext
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }
 
-        public CarBookingContex()
+        public CarBookingContext()
         {
 
         }

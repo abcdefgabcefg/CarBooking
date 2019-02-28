@@ -7,9 +7,9 @@ using System.Data.Entity;
 
 namespace CarBooking.DAL.EF
 {
-    class CarBookingInitializer : DropCreateDatabaseAlways<CarBookingContex>
+    class CarBookingInitializer : DropCreateDatabaseAlways<CarBookingContext>
     {
-        protected override void Seed(CarBookingContex context)
+        protected override void Seed(CarBookingContext context)
         {
             
         }

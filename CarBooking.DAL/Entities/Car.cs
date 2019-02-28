@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CarBooking.DAL.Entities
 {
+    // don't forget to change repository updating logic
     public class Car
     {
         public int ID { get; set; }
@@ -28,7 +29,31 @@ namespace CarBooking.DAL.Entities
         [Required(ErrorMessage =requireMes)]
         public bool IsFree { get; set; }
 
-        private int count;
+
         private const string requireMes = "Required field";
+    }
+
+    class CarEqualityComparer : IEqualityComparer<Car>
+    {
+        public bool Equals(Car x, Car y)
+        {
+            if (x == null && y == null)
+            {
+                return true;
+            }
+            else if (x == null || y == null)
+            {
+                return false;
+            }
+            else
+            {
+                return x.CarTitle == y.CarTitle;
+            }
+        }
+
+        public int GetHashCode(Car obj)
+        {
+            return obj.ID;
+        }
     }
 }
