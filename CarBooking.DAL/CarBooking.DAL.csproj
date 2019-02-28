@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EFUnitOfWork.cs" />
     <Compile Include="EF\CarBookingContext.cs" />
     <Compile Include="EF\CarBookingInitializer.cs" />
     <Compile Include="Entities\Car.cs" />
