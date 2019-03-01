@@ -11,10 +11,6 @@ namespace CarBooking.DAL.Entities
     public class Car
     {
         public int ID { get; set; }
-        
-        [Required(ErrorMessage =requireMes)]
-        [MaxLength(60, ErrorMessage ="Max lenght is 60 characters")]
-        public string CompanyTitle { get; set; }
 
         [Required(ErrorMessage = requireMes)]
         public bool IsLuxury { get; set; }
