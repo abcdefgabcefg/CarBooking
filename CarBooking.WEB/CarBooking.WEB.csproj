@@ -228,6 +228,7 @@
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\LogIn.cshtml" />
+    <Content Include="Views\Cars\GetAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

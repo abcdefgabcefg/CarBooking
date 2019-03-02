@@ -59,16 +59,21 @@ namespace CarBooking.WEB.Controllers
         // GET: Cars/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            var user = Session["User"] as User;
+            if (user != null && user.Role == Role.Admin)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Car car = unitOfWork.Cars.Get(id.Value);
+                if (car == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(car); 
             }
-            Car car = unitOfWork.Cars.Get(id.Value);
-            if (car == null)
-            {
-                return HttpNotFound();
-            }
-            return View(car);
+            return RedirectToAction("Index");
         }
 
         // POST: Cars/Edit/5
@@ -91,19 +96,25 @@ namespace CarBooking.WEB.Controllers
         // GET: Cars/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            var user = Session["User"] as User;
+
+            if (user != null && user.Role == Role.Admin)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                var car = unitOfWork.Cars.Get(id.Value);
+
+                if (car == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(car); 
             }
-
-            var car = unitOfWork.Cars.Get(id.Value);
-
-            if (car == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(car);
+            return RedirectToAction("Index");
         }
 
         // POST: Cars/Delete/5
@@ -113,6 +124,16 @@ namespace CarBooking.WEB.Controllers
         {
             unitOfWork.Cars.Delete(id);
             unitOfWork.Save();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult GetAll()
+        {
+            var user = Session["User"] as User;
+            if (user != null && user.Role == Role.Admin)
+            {
+                return View(unitOfWork.Cars.GetAll().ToList()); 
+            }
             return RedirectToAction("Index");
         }
 
