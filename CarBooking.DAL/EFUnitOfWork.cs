@@ -11,8 +11,43 @@ namespace CarBooking.DAL
     public class EFUnitOfWork : IDisposable
     {
         private CarBookingContext db = new CarBookingContext();
-        public CarRepository Cars { get; }
-        public OrderRepository Orders { get; }
+        private CarRepository cars;
+        private OrderRepository orders;
+        private UserRepository users;
+        public CarRepository Cars
+        {
+            get
+            {
+                if(cars == null)
+                {
+                    cars = new CarRepository(db);
+                }
+                return cars;
+            }
+        }
+        public OrderRepository Orders
+        {
+            get
+            {
+                if(orders == null)
+                {
+                    orders = new OrderRepository(db);
+                }
+                return orders;
+            }
+        }
+
+        public UserRepository Users
+        {
+            get
+            {
+                if(users == null)
+                {
+                    users = new UserRepository(db);
+                }
+                return users;
+            }
+        }
 
         public void Save()
         {

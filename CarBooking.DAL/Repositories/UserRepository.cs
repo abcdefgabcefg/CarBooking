@@ -9,37 +9,36 @@ using System.Data.Entity;
 
 namespace CarBooking.DAL.Repositories
 {
-    public class OrderRepository : IRepository<Order>
+    public class UserRepository : IRepository<User>
     {
         private CarBookingContext db;
 
-        public OrderRepository(CarBookingContext context)
+        public UserRepository(CarBookingContext context)
         {
             db = context;
         }
 
-        public void Create(Order item)
+        public void Create(User item)
         {
-            item.Status = Status.NotConfirmed;
-            db.Orders.Add(item);
+            db.Users.Add(item);
         }
 
         public void Delete(int id)
         {
-            db.Orders.Remove(db.Orders.Find(id));
+            db.Users.Remove(db.Users.Find(id));
         }
 
-        public Order Get(int id)
+        public User Get(int id)
         {
-            return db.Orders.Find(id);
+            return db.Users.Find(id);
         }
 
-        public IEnumerable<Order> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            return db.Orders;
+            return db.Users;
         }
 
-        public void Update(Order item)
+        public void Update(User item)
         {
             db.Entry(item).State = EntityState.Modified;
         }

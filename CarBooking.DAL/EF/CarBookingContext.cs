@@ -12,10 +12,16 @@ namespace CarBooking.DAL.EF
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<User> Users { get; set; }
 
-        public CarBookingContext()
+        public CarBookingContext() : base("CarBookingDB")
         {
+            Database.SetInitializer(new CarBookingInitializer());
+        }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>().HasOptional<User>(order => order.Manager).WithMany().WillCascadeOnDelete(false);
         }
     }
 }

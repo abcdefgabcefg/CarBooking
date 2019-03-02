@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,12 @@ namespace CarBooking.DAL.Repositories
 {
     public class CarRepository : IRepository<Car>
     {
-        private CarBookingContext db = new CarBookingContext();
+        private CarBookingContext db;
+
+        public CarRepository(CarBookingContext context)
+        {
+            db = context;
+        }
 
         public void Create(Car item)
         {
@@ -29,12 +35,12 @@ namespace CarBooking.DAL.Repositories
 
         public IEnumerable<Car> GetAll()
         {
-            return db.Cars.Where(car => car.IsFree).Distinct(new CarEqualityComparer());
+            return db.Cars;
         }
 
-        public IEnumerable<Car> Get(string search = "", bool isLuxury = false, SortOrder sort = SortOrder.None, SortDirection direction = SortDirection.ASC)
+        public IEnumerable<Car> Get(string search, bool isLuxury, SortOrder sort, SortDirection direction)
         {
-            var cars = GetAll();
+            var cars = GetAll().Where(car => car.IsFree).GroupBy(car => car.CarTitle).Select(carGroup => carGroup.FirstOrDefault()); 
 
             if(!string.IsNullOrWhiteSpace(search))
             {
@@ -57,14 +63,15 @@ namespace CarBooking.DAL.Repositories
                     case SortOrder.Cost:
                         switch (direction)
                         {
+                            case SortDirection.None:
                             case SortDirection.ASC:
                                 cars = from car in cars
-                                       orderby car.Cost
+                                       orderby car.Price
                                        select car;
                                 break;
                             case SortDirection.DESC:
                                 cars = from car in cars
-                                       orderby car.Cost descending
+                                       orderby car.Price descending
                                        select car;
                                 break;
                         }
@@ -72,6 +79,7 @@ namespace CarBooking.DAL.Repositories
                     case SortOrder.Title:
                         switch (direction)
                         {
+                            case SortDirection.None:
                             case SortDirection.ASC:
                                 cars = from car in cars
                                        orderby car.CarTitle
@@ -91,11 +99,7 @@ namespace CarBooking.DAL.Repositories
 
         public void Update(Car item)
         {
-            var car = db.Cars.Find(item.ID);
-            car.IsLuxury = item.IsLuxury;
-            car.Cost = item.Cost;
-            car.CarTitle = item.CarTitle;
-            car.IsFree = item.IsFree;
+            db.Entry(item).State = EntityState.Modified;
         }
     }
 
@@ -106,6 +110,6 @@ namespace CarBooking.DAL.Repositories
 
     public enum SortDirection
     {
-        ASC, DESC
+        None, ASC, DESC
     }
 }
