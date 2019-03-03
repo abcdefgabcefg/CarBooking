@@ -1,56 +1,17 @@
 ﻿@model IEnumerable<CarBooking.DAL.Entities.Car>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Cars";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IsLuxury)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CarTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsFree)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsLuxury)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CarTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsFree)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ImagePath)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+<div>
+    @foreach (var car in Model)
+    {
+        <div>
+           <img src="@car.ImagePath" alt="@car.CarTitle" />
+           <h4>@car.CarTitle</h4>
+           <p>@car.Price</p>
+           <p>@car.IsLuxury</p>
+        </div>
+    }
+</div>

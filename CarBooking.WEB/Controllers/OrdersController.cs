@@ -25,10 +25,14 @@ namespace CarBooking.WEB.Controllers
 
         
         // GET: Orders/Create
-        public ActionResult Create()
+        public ActionResult Create(int carID)
         {
-            ViewBag.CarID = new SelectList(unitOfWork.Cars.GetAll().ToList(), "ID", "CarTitle");
-            return View();
+            if (Session["User"] as User != null)
+            {
+                ViewBag.CarID = carID;
+                return View(); 
+            }
+            return RedirectToAction("Index", "Cars");
         }
 
         // POST: Orders/Create
@@ -40,84 +44,106 @@ namespace CarBooking.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                order.ClientID = (Session["User"] as User).ID;
                 unitOfWork.Orders.Create(order);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CarID = new SelectList(unitOfWork.Cars.GetAll().ToList(), "ID", "CarTitle", order.CarID);
+            ViewBag.CarID = order.CarID;
             return View(order);
         }
 
-        /*
-        // GET: Orders/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult GetNotConfirmedAndFinished()
         {
-            if (id == null)
+            var user = Session["User"] as User;
+            if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(unitOfWork.Orders.GetNotConfirmedAndFinished().ToList());
             }
-            Order order = db.Orders.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CarID = new SelectList(db.Cars, "ID", "CarTitle", order.CarID);
-            return View(order);
+            return RedirectToAction("Index", "Cars");
         }
 
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,StartDate,FinishDate,PassportNumber,NeedDriver,CarID")] Order order)
+        public ActionResult GetUserOrders()
         {
-            if (ModelState.IsValid)
+            var user = Session["User"] as User;
+            if (user != null)
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View(unitOfWork.Orders.GetUserOrders(user.ID));
             }
-            ViewBag.CarID = new SelectList(db.Cars, "ID", "CarTitle", order.CarID);
-            return View(order);
+            return RedirectToAction("Index", "Cars");
+        }
+
+        
+        public ActionResult Confirm(int id)
+        {
+            var user = Session["User"] as User;
+            if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
+            {
+                unitOfWork.Orders.Confirm(id);
+                unitOfWork.Save();
+                return RedirectToAction("GetNotConfirmed");
+            }
+            return RedirectToAction("Index", "Car");
+        }
+
+        public ActionResult Refuse(int id, string comment)
+        {
+            var user = Session["User"] as User;
+            if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
+            {
+                unitOfWork.Orders.Refuse(id, comment);
+                unitOfWork.Save();
+                return RedirectToAction("GetNotConfirmed");
+            }
+            return RedirectToAction("Index", "Car");
         }
 
         // GET: Orders/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            var user = Session["User"] as User;
+            if (user != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                unitOfWork.Orders.Delete(id);
+                unitOfWork.Save();
+                return RedirectToAction("GetUserOrders");
             }
-            Order order = db.Orders.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
+            return RedirectToAction("Index", "Cars");
         }
 
-        // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Pay(int id)
         {
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var user = Session["User"] as User;
+            if (user != null)
+            {
+                unitOfWork.Orders.Pay(id);
+                unitOfWork.Save();
+                return RedirectToAction("GetUserOrders");
+            }
+            return RedirectToAction("Index", "Car");
+        }
+
+        public ActionResult ToRepair(int id, decimal repairPrice)
+        {
+            var user = Session["User"] as User;
+            if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
+            {
+                unitOfWork.Orders.ToRepair(id, repairPrice);
+                unitOfWork.Save();
+                return RedirectToAction("GetNotConfirmedAndFinished");
+            }
+            return RedirectToAction("Index", "Car");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
-        */
     }
 
 }

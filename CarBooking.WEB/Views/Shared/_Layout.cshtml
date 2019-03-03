@@ -1,44 +1,74 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
+    <title>@ViewBag.Title - Car Booking</title>
+    <link href="~/Styles/layout.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
+    @*
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    *@
+    
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+    <header>
+        <div class="menu-contaner">
+            <ul class="user-menu">
+                @{
+                    var user = Session["User"] as CarBooking.DAL.Entities.User;
+
+                    if (user != null)
+                    {
+                        if (user.Role == CarBooking.DAL.Entities.Role.Client)
+                        {
+                            <li>@Html.ActionLink("Cars", "Index", "Cars")</li>
+                            <li>@Html.ActionLink("Orders", "GetUserOrders", "Orders")</li>
+                        }
+                        if (user.Role == CarBooking.DAL.Entities.Role.Manager)
+                        {
+                            <li>@Html.ActionLink("Orders", "GetNotConfirmedAndFinished", "Orders")</li>
+                        }
+                        if (user.Role == CarBooking.DAL.Entities.Role.Admin)
+                        {
+                            <li>@Html.ActionLink("Cars", "GetCars", "Cars")</li>
+                            <li>@Html.ActionLink("Clients", "GetUsers", "Users")</li>
+                            <li>@Html.ActionLink("Managers", "GetManagers", "Users")</li>
+                        }
+                    }
+                }
+            </ul>
+            <ul class="account-menu">
+                @{
+                    if (user != null)
+                    {
+                        var title = "Hi, " + user.Login;
+                        <li><span class="user-name">@title</span></li>
+                        <li>@Html.ActionLink("Log out", "LogOut", "Users")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Log in", "LogIn", "Users")</li>
+                        <li>@Html.ActionLink("Register", "Register", "Users")</li>
+                    }
+                }
+            </ul>
+        </div>
+    </header>
+    <div>
+        <div class="body-contaner">
+            @RenderBody()
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
+    <footer>
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        <p>&copy; @DateTime.Now.Year - Car Booking</p>
+    </footer>
+    @*
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    *@
 </body>
 </html>

@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Log In";
+}
+
+<link href="~/Styles/logIn.css" rel="stylesheet" />
+
+<form autocomplete="off" action="LogIn" method="post">
+    <span>Login:</span><br />
+    <input type="text" name="login" pattern=".{0,50}" required title="Required filed. Max lenght is 50 character"><br>
+
+    <span>Password:</span><br />
+    <input type="password" name="password" pattern=".{4,50}" required title="Required filed. Lenght is from 4 to 50 character"><br>
+
+    <input type="submit"><br />
+
+    <span class="error">@ViewBag.ErrorMessage</span>
+</form>
+

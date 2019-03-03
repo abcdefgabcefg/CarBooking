@@ -1,0 +1,38 @@
+﻿form{
+    padding-top: 40px;
+}
+
+input {
+    margin: 5px 0 20px;
+    font-family: inherit;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+    input[type="submit"] {
+        margin-top: 20px;
+        margin-left: 180px;
+        background: white;
+        padding: 10px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+        input[type="submit"]:hover, input[type="submit"]:focus {
+            box-shadow: 0 0 10px black;
+        }
+        input[type="submit"]:focus {
+            outline: none;
+        }
+
+input[type="text"], input[type="password"]{
+    font-size: 16px;
+    padding: 3px 5px;
+    outline: none;
+}
+
+.error{
+    color: red;
+    font-size: 15px;
+    margin-left: 92px;
+}

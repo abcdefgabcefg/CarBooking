@@ -26,7 +26,11 @@ namespace CarBooking.DAL.Repositories
 
         public void Delete(int id)
         {
-            db.Orders.Remove(db.Orders.Find(id));
+            var order = db.Orders.Find(id);
+            if (order.Status == Status.Refused || order.Status == Status.WPFR)
+            {
+                db.Orders.Remove(order);
+            }
         }
 
         public Order Get(int id)
@@ -36,12 +40,80 @@ namespace CarBooking.DAL.Repositories
 
         public IEnumerable<Order> GetAll()
         {
+            foreach (var order in db.Orders)
+            {
+                if(order.FinishDate <= DateTime.Now)
+                {
+                    Finish(order);
+                }
+            }
+            db.SaveChanges();
             return db.Orders;
         }
 
         public void Update(Order item)
         {
             db.Entry(item).State = EntityState.Modified;
+        }
+
+        public IEnumerable<Order> GetNotConfirmedAndFinished()
+        {
+            return from order in GetAll()
+                   where order.Status == Status.NotConfirmed || order.Status == Status.Finished
+                   select order;
+        }
+
+        public IEnumerable<Order> GetUserOrders(int id)
+        {
+            return from order in GetAll()
+                   where order.ClientID == id
+                   select order;
+        }
+
+        public void Confirm(int id)
+        {
+            var order = Get(id);
+            if (order.Status == Status.NotConfirmed)
+            {
+                order.Status = Status.Confirmed;
+            }
+        }
+
+        public void Pay(int id)
+        {
+            var order = Get(id);
+            if (order.Status == Status.Confirmed)
+            {
+                order.Status = Status.Piad; 
+            }
+        }
+
+        public void Refuse(int id, string comment)
+        {
+            var order = Get(id);
+            if (order.Status == Status.NotConfirmed)
+            {
+                order.Status = Status.Refused;
+                order.ManagerComment = comment;
+            }
+        }
+
+        private void Finish(Order order)
+        {
+            if(order.Status == Status.Piad)
+            {
+                order.Status = Status.Finished;
+            }
+        }
+
+        public void ToRepair(int id, decimal repairPrice)
+        {
+            var order = Get(id);
+            if (order.Status == Status.Finished)
+            {
+                order.Status = Status.WPFR;
+                order.RepairPrice = repairPrice;
+            }
         }
     }
 }

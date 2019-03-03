@@ -1,0 +1,54 @@
+﻿body {
+    margin: 0;
+    font-family: 'Coiny', cursive;
+}
+
+.body-contaner, footer, .menu-contaner {
+    margin: 0 5%;
+}
+
+header {
+    background: #232a34;
+    color: #ccc;
+}
+
+.menu-contaner{
+    display: flex;
+}
+
+ul.user-menu {
+    width: 80%;
+}
+ul.account-menu{
+   width: 20%;
+}
+
+.menu-contaner ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+    .menu-contaner ul a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    .menu-contaner ul a:hover {
+        color: white;
+    }
+    
+    .menu-contaner ul a.first{
+        padding-left: 0;
+    }
+
+.menu-contaner ul span.user-name{
+    display: block;
+    padding: 20px;
+    cursor: context-menu;
+    color: white;
+}

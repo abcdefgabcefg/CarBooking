@@ -43,11 +43,31 @@ namespace CarBooking.DAL.Entities
         public virtual User Client { get; set; }
         public virtual User Manager { get; set; }
 
+        public decimal Price
+        {
+            get
+            {
+                if (Car != null)
+                {
+                    decimal price = Car.Price;
+                    if (NeedDriver)
+                        price += 20;
+                    return price * Convert.ToDecimal((StartDate - FinishDate).TotalHours);
+                }
+                return 0;
+            }
+        }
+
+        [MaxLength(500)]
+        public string ManagerComment { get; set; }
+
+        public decimal RepairPrice { get; set; }
+
         private const string requireMes = "Required field";
     }
 
     public enum Status
     {
-        NotConfirmed, Confirmed
+        NotConfirmed, Confirmed, Piad, Refused, Finished, WPFR
     }
 }

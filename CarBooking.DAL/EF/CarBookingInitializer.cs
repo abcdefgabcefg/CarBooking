@@ -20,7 +20,7 @@ namespace CarBooking.DAL.EF
                     Price = 100,
                     CarTitle = "Toyota Corolla",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/Toyota Corolla.jpg"
                 },
 
                 new Car
@@ -29,7 +29,7 @@ namespace CarBooking.DAL.EF
                     Price = 65,
                     CarTitle = "Volkswagen Beetle",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/Volkswagen Beetle.jpg"
                 },
 
                 new Car
@@ -38,16 +38,7 @@ namespace CarBooking.DAL.EF
                     Price = 150,
                     CarTitle = "Ford Model T",
                     IsFree = true,
-                    ImagePath = "Here is URL"
-                },
-
-                new Car
-                {
-                    IsLuxury = false,
-                    Price = 75,
-                    CarTitle = "Ford F-Series",
-                    IsFree = false,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/Ford Model T.jpg"
                 },
 
                 new Car
@@ -56,7 +47,7 @@ namespace CarBooking.DAL.EF
                     Price = 75,
                     CarTitle = "Ford F-Series",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/Ford F-Series.jpg"
                 },
 
                 new Car
@@ -65,7 +56,16 @@ namespace CarBooking.DAL.EF
                     Price = 75,
                     CarTitle = "Ford F-Series",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/Ford F-Series.jpg"
+                },
+
+                new Car
+                {
+                    IsLuxury = false,
+                    Price = 75,
+                    CarTitle = "Ford F-Series",
+                    IsFree = true,
+                    ImagePath = "CarPictures/Ford F-Series.jpg"
                 },
 
                 new Car
@@ -73,8 +73,8 @@ namespace CarBooking.DAL.EF
                     IsLuxury = true,
                     Price = 80,
                     CarTitle = "Chevy Silverado",
-                    IsFree = false,
-                    ImagePath = "Here is URL"
+                    IsFree = true,
+                    ImagePath = "CarPictures/Chevy Silverado.jpg"
                 },
 
                 new Car
@@ -83,7 +83,7 @@ namespace CarBooking.DAL.EF
                     Price = 70,
                     CarTitle = "2017 Volkswagen Gulf",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/2017 Volkswagen Gulf.jpg"
                 },
 
                 new Car
@@ -92,7 +92,7 @@ namespace CarBooking.DAL.EF
                     Price = 60,
                     CarTitle = "2017 Wuling Hongguang",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/2017 Wuling Hongguang.jpg"
                 },
 
                 new Car
@@ -101,7 +101,7 @@ namespace CarBooking.DAL.EF
                     Price = 95,
                     CarTitle = "Honda Accord",
                     IsFree = true,
-                    ImagePath = "Here is URL"
+                    ImagePath = "CarPictures/Honda Accord and Honda Civic.jpg"
                 },
 
                 new Car
@@ -109,8 +109,8 @@ namespace CarBooking.DAL.EF
                     IsLuxury = true,
                     Price = 90,
                     CarTitle = "Honda Civic",
-                    IsFree = false,
-                    ImagePath = "Here is URL"
+                    IsFree = true,
+                    ImagePath = "CarPictures/Honda Accord and Honda Civic.jpg"
                 },
 
                 new Car
@@ -118,8 +118,8 @@ namespace CarBooking.DAL.EF
                     IsLuxury = true,
                     Price = 90,
                     CarTitle = "Honda Civic",
-                    IsFree = false,
-                    ImagePath = "Here is URL"
+                    IsFree = true,
+                    ImagePath = "CarPictures/Honda Accord and Honda Civic.jpg"
                 }
             };
 
@@ -127,23 +127,26 @@ namespace CarBooking.DAL.EF
             {
                 new User
                 {
-                    Login = "tree17",
+                    Login = "client",
                     Password = "123456",
-                    Role = Role.Client
+                    Role = Role.Client,
+                    IsBlock = false
                 },
 
                 new User
                 {
-                    Login = "frog65",
+                    Login = "manager",
                     Password = "123456",
-                    Role = Role.Manager
+                    Role = Role.Manager,
+                    IsBlock = false
                 },
 
                 new User
                 {
-                    Login = "sky88",
+                    Login = "admin",
                     Password = "123456",
-                    Role = Role.Admin
+                    Role = Role.Admin,
+                    IsBlock = false
                 }
             };
 
@@ -158,7 +161,7 @@ namespace CarBooking.DAL.EF
                     CarID = 4,
                     ClientID = 1,
                     ManagerID = 2,
-                    Status = Status.NotConfirmed
+                    Status = Status.Confirmed
                 },
 
                 new Order
@@ -194,7 +197,7 @@ namespace CarBooking.DAL.EF
                     CarID = 12,
                     ClientID = 1,
                     ManagerID = 2,
-                    Status = Status.NotConfirmed
+                    Status = Status.Confirmed
                 }
             };
 

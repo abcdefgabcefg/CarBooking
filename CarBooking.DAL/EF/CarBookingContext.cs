@@ -14,7 +14,7 @@ namespace CarBooking.DAL.EF
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public CarBookingContext() : base("CarBookingDB")
+        public CarBookingContext() : base("CarBooking")
         {
             Database.SetInitializer(new CarBookingInitializer());
         }
