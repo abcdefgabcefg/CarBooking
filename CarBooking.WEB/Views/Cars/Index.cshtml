@@ -4,14 +4,29 @@
     ViewBag.Title = "Cars";
 }
 
-<div>
+<link href="~/Styles/Cars/index.css" rel="stylesheet"/>
+
+<div class="cars-wrapper">
     @foreach (var car in Model)
     {
-        <div>
-           <img src="@car.ImagePath" alt="@car.CarTitle" />
-           <h4>@car.CarTitle</h4>
-           <p>@car.Price</p>
-           <p>@car.IsLuxury</p>
+        <div class="car-contaner">
+          <div class="car-image-wrapper"><img src="@car.ImagePath" alt="@car.CarTitle" /></div> 
+          <div class="car-data-wrapper">
+              <h3>@car.CarTitle</h3>
+              <p>@car.Price $ per h</p>
+              @if (car.IsLuxury)
+              {
+                  <p>Luxury</p>
+              }
+              @if (Session["User"] as CarBooking.DAL.Entities.User != null)
+              {
+                  @Html.ActionLink("Order", "Create", "Orders", new { carID = car.ID}, null)
+              }
+              else
+              {
+                  @Html.ActionLink("Order", "LogIn", "Users", new { errorMessage = "You need to authorize"}, null)
+              }
+          </div>
         </div>
     }
 </div>
