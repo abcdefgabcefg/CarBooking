@@ -46,13 +46,22 @@ namespace CarBooking.WEB.Controllers
                 order.ClientID = (Session["User"] as User).ID;
                 order.Car = unitOfWork.Cars.Get(order.CarID);
                 unitOfWork.Orders.Create(order);
-                unitOfWork.Save();
-                ViewBag.CarID = order.CarID;
-                return RedirectToAction("GetUserOrders");
+                try
+                {
+                    unitOfWork.Save();
+                    return RedirectToAction("GetUserOrders");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    ViewBag.CarID = order.CarID;
+                    return View();
+                }
             }
 
-            
-            return RedirectToAction("Create", new { carID = order.CarID});
+
+            ViewBag.CarID = order.CarID;
+            return View();
         }
 
         public ActionResult GetNotConfirmedAndFinished()
