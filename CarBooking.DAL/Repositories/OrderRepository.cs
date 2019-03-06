@@ -22,6 +22,12 @@ namespace CarBooking.DAL.Repositories
         {
             item.Status = Status.NotConfirmed;
             item.Car.IsFree = false;
+
+            decimal price = item.Car.Price;
+            price += item.NeedDriver ? 10 : 0;
+            price = Convert.ToDecimal((item.FinishDate - item.StartDate).TotalHours) * price;
+            item.Price = price;
+
             db.Orders.Add(item);
         }
 
