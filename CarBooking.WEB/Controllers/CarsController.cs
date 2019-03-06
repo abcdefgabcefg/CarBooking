@@ -91,8 +91,16 @@ namespace CarBooking.WEB.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.Cars.Update(car);
-                unitOfWork.Save();
-                return RedirectToAction("GetAll");
+                try
+                {
+                    unitOfWork.Save();
+                    return RedirectToAction("GetAll");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    return View(car);
+                }
             }
             return View(car);
         }
