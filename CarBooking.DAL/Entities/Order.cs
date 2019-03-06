@@ -13,17 +13,21 @@ namespace CarBooking.DAL.Entities
         public int ID { get; set; }
 
         [Required(ErrorMessage = requireMes)]
+        [Display(Name ="Start Date: ")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = requireMes)]
+        [Display(Name ="Finish Date: ")]
         public DateTime FinishDate { get; set; }
 
         [Required(ErrorMessage = requireMes)]
-        [MaxLength(9, ErrorMessage ="Require 9 numbers")]
-        [MinLength(9, ErrorMessage ="Require 9 numbers")]
+        [Column(TypeName ="char")]
+        [StringLength(9, ErrorMessage ="Leng's is 9 characters")]
+        [Display(Name ="Passport Number: ")]
         public string PassportNumber { get; set; }
 
         [Required(ErrorMessage =requireMes)]
+        [Display(Name ="Need Driver: ")]
         public bool NeedDriver { get; set; }
 
         [Required(ErrorMessage =requireMes)]
@@ -33,35 +37,19 @@ namespace CarBooking.DAL.Entities
         public int CarID { get; set; }
 
         [Required(ErrorMessage =requireMes)]
-        //[ForeignKey("User")]
         public int ClientID { get; set; }
-
-        //[ForeignKey("User")]
-        public int? ManagerID { get; set; }
-
+        
         public virtual Car Car { get; set; }
         public virtual User Client { get; set; }
-        public virtual User Manager { get; set; }
 
-        public int Price
-        {
-            get
-            {
-                if (Car != null)
-                {
-                    decimal price = Car.Price;
-                    if (NeedDriver)
-                        price += 20;
-                    return Convert.ToInt32(price * Convert.ToDecimal((FinishDate - StartDate).TotalHours));
-                }
-                return 0;
-            }
-        }
+        public decimal Price { get; set; }
 
         [MaxLength(500)]
+        [Display(Name ="Manager Comment: ")]
         public string ManagerComment { get; set; }
 
-        public decimal RepairPrice { get; set; }
+        [Display(Name ="Repair Price: ")]
+        public decimal? RepairPrice { get; set; }
 
         private const string requireMes = "Required field";
     }

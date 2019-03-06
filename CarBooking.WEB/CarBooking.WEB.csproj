@@ -200,6 +200,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="MyScripts\orderDataValidation.js" />
     <Content Include="MyScripts\userDataValidation.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -245,7 +246,6 @@
     <Content Include="Styles\Cars\getAll.css" />
     <Content Include="Styles\Cars\index.css" />
     <Content Include="Styles\layout.css" />
-    <Content Include="Styles\Order\create.css" />
     <Content Include="Styles\Order\managerOrders.css" />
     <Content Include="Styles\Order\refuse.css" />
     <Content Include="Styles\Order\userOrders.css" />

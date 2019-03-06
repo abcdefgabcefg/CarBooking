@@ -4,29 +4,37 @@
     ViewBag.Title = "Order";
 }
 
-<link href="~/Styles/Order/create.css" rel="stylesheet"/>
+<div class="form-group">
+    @Html.ValidationSummary()
+</div>
 
-<form autocomplete="off" method="post" action="Create">
-    <div>
-        @Html.LabelFor(order => order.StartDate, "Start Date:")<br>
-        @Html.EditorFor(order => order.StartDate)
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(order => order.StartDate)<br>
+        @Html.EditorFor(order => order.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+        <span id="start-date-error" class="error-message"></span>
     </div>
-    <div>
-        @Html.LabelFor(order => order.FinishDate, "Finish Date:", null)<br />
-        @Html.EditorFor(order => order.FinishDate)
+    <div class="form-group">
+        @Html.LabelFor(order => order.FinishDate)<br />
+        @Html.EditorFor(order => order.FinishDate, new { htmlAttributes = new { @class = "form-control" } })
+        <span id="finish-date-error" class="error-message"></span>
     </div>
-    <div>
-        @Html.LabelFor(order => order.PassportNumber, "Passport Number:", null)<br />
-        @Html.EditorFor(order => order.PassportNumber)
+    <div class="form-group">
+        @Html.LabelFor(order => order.PassportNumber)<br />
+        @Html.EditorFor(order => order.PassportNumber, new { htmlAttributes = new { @class = "form-control" } })
+        <span id="passport-number-error" class="error-message"></span>
     </div>
-    <div>
-        @Html.LabelFor(order => order.NeedDriver, "Need Driver:")
+    <div class="form-group">
+        @Html.LabelFor(order => order.NeedDriver, new { @class = "form-check-label" })
         @Html.EditorFor(order => order.NeedDriver)
     </div>
-    <div>
-        <input type="hidden" value="@ViewBag.CarID" name="CarID"/>
+    <div class="form-group">
+        @Html.HiddenFor(order => order.ID)
     </div>
-    <div>
-        <input type="submit" />
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary form-submit-button" value="OK"/>
     </div>
-</form>
+}
+
+<script src="~/MyScripts/orderDataValidation.js"></script>

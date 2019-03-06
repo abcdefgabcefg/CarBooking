@@ -136,7 +136,7 @@ namespace CarBooking.WEB.Controllers
         public ActionResult LogOut()
         {
             Session["User"] = null;
-            return RedirectToAction("Index", "Cars");
+            return RedirectToAction("LogIn");
         }
 
         public ActionResult GetUsers()
