@@ -1,0 +1,26 @@
+﻿@model CarBooking.DAL.Entities.User
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.ValidationSummary()
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(user => user.Login)
+        @Html.TextBoxFor(user => user.Login, new { @class="form-control"})
+        <span id="login-error" class="error-message"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(user => user.Password)
+        @Html.PasswordFor(user => user.Password, new { @class = "form-control" })
+        <span id="password-error" class="error-message"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="OK" style="margin-left: 230px;"/>
+    </div>
+}
+
+<script src="~/MyScripts/userDataValidation.js"></script>

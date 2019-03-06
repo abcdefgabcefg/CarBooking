@@ -14,35 +14,69 @@ namespace CarBooking.WEB.Controllers
 
         public ActionResult Register()
         {
-            return View();
+            ViewBag.Title = "Sign Up";
+            return View("InputUser");
         }
 
         [HttpPost]
         public ActionResult Register(User user)
         {
-            unitOfWork.Users.CreateClient(user);
-            unitOfWork.Save();
-            Session["User"] = user;
-            return RedirectToAction("GetUserOrders", "Orders");
+            if (!unitOfWork.Users.IsUnique(user.Login))
+            {
+                ModelState.AddModelError("Login", "It is busy login");
+            }
+            if (ModelState.IsValid)
+            {
+                unitOfWork.Users.CreateClient(user);
+                try
+                {
+                    unitOfWork.Save();
+                    Session["User"] = user;
+                    return RedirectToAction("GetUserOrders", "Orders");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    return View("InputUser");
+                }
+            }
+            return View("InputUser");
         }
 
         public ActionResult CreateManager()
         {
-            return View();
+            ViewBag.Title = "Create Manager";
+            return View("InputUser");
         }
 
         [HttpPost]
         public ActionResult CreateManager(User user)
         {
-            user.Role = Role.Manager;
-            unitOfWork.Users.Create(user);
-            unitOfWork.Save();
-            return RedirectToAction("Index", "Cars");
+            if (!unitOfWork.Users.IsUnique(user.Login))
+            {
+                ModelState.AddModelError("Login", "It is busy login");
+            }
+            if (ModelState.IsValid)
+            {
+                unitOfWork.Users.CreateManager(user);
+                try
+                {
+                    unitOfWork.Save();
+                    return RedirectToAction("GetManagers");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    return View("InputUser");
+                }
+            }
+            return View("InputUser");
         }
 
         public ActionResult LogIn()
         {
-            return View();
+            ViewBag.Title = "Log In";
+            return View("InputUser");
         }
 
         [HttpPost]
@@ -72,7 +106,7 @@ namespace CarBooking.WEB.Controllers
                         return RedirectToAction("Index", "Cars");
                 }
             }
-            return View();
+            return View("InputUser");
         }
 
         public ActionResult BlockUser(int id)

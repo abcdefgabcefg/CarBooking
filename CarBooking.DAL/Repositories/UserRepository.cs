@@ -104,5 +104,14 @@ namespace CarBooking.DAL.Repositories
                    select user;
         }
 
+        public bool IsUnique(string login)
+        {
+            foreach (var user in GetAll())
+            {
+                if (user.Login == login)
+                    return false;
+            }
+            return true;
+        }
     }
 }
