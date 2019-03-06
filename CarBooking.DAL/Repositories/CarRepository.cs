@@ -20,6 +20,7 @@ namespace CarBooking.DAL.Repositories
 
         public void Create(Car item)
         {
+            item.IsFree = true;
             db.Cars.Add(item);
         }
 

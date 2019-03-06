@@ -46,13 +46,20 @@ namespace CarBooking.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                car.IsFree = true;
                 unitOfWork.Cars.Create(car);
-                unitOfWork.Save();
-                return RedirectToAction("Index");
+                try
+                {
+                    unitOfWork.Save();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    return View();
+                }
             }
 
-            return View(car);
+            return View();
         }
 
         // GET: Cars/Edit/5
