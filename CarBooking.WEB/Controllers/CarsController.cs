@@ -90,10 +90,9 @@ namespace CarBooking.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                car.IsFree = true;
                 unitOfWork.Cars.Update(car);
                 unitOfWork.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("GetAll");
             }
             return View(car);
         }
