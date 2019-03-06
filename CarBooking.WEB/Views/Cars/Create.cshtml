@@ -4,41 +4,41 @@
     ViewBag.Title = "Create";
 }
 
-<div class="container" style="padding-top:30px;">
     @using (Html.BeginForm())
     {
+        <div class="form-group">
+            @Html.ValidationSummary()
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(car => car.CarTitle)<br />
-            @Html.TextBoxFor(car => car.CarTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(car => car.CarTitle)
+            @Html.TextBoxFor(car => car.CarTitle, new { @class = "form-control" } )
+            <span id="car-title-error" class="error-message"></span>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(car => car.Price)<br />
-            @Html.TextBoxFor(car => car.Price, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(car => car.Price)
+            @Html.TextBoxFor(car => car.Price, new { @class = "form-control" } )
+            <span id="price-error" class="error-message"></span>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(car => car.ImagePath)<br />
-            @Html.TextBoxFor(car => car.ImagePath, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(car => car.ImagePath)
+            @Html.TextBoxFor(car => car.ImagePath, new { @class = "form-control" } )
+            <span id="image-path-error" class="error-message"></span>
         </div>
 
         <div class="form-group">
-            <div class="form-check" style="padding-left:0;">
-                @Html.LabelFor(car => car.IsLuxury, new { @class = "form-check-label", @style = "padding-right: 25px" })
-                @Html.CheckBoxFor(car => car.IsLuxury, new { @class = "form-check-input" })
-            </div>
+            @Html.LabelFor(car => car.IsLuxury, new { @class = "form-check-label"})
+            @Html.CheckBoxFor(car => car.IsLuxury)
         </div>
 
-        <input type="submit" class="btn btn-light" style="margin-bottom: 10px;" />
+        <input type="submit" class="btn btn-primary form-submit-button" value="OK" />
     }
 
 
     <div>
-        @Html.ActionLink("Back to List", "GetAll", null, new { @class = "btn btn-light" })
+        @Html.ActionLink("Back to List", "GetAll", null, new { @class= "btn btn-link" })
     </div>
-</div>
 
+    <script src="~/MyScripts/carDataValidation.js"></script>
