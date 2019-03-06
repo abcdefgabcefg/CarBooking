@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CarBooking.DAL.Entities;
 using CarBooking.DAL.EF;
 using System.Data.Entity;
+using System.Security.Cryptography;
 
 namespace CarBooking.DAL.Repositories
 {
@@ -20,9 +21,14 @@ namespace CarBooking.DAL.Repositories
 
         public void Create(User item)
         {
+            if (item == null)
+                throw new ArgumentNullException();
+
             item.IsBlock = false;
+            item.Password = item.Password.GetHashCode().ToString();
             db.Users.Add(item);
         }
+
 
         public void Delete(int id)
         {
@@ -55,24 +61,48 @@ namespace CarBooking.DAL.Repositories
             var user = Get(id);
             user.IsBlock = false;
         }
-        
+
         public User Get(string login, string password)
         {
-            return (from us in GetAll()
-                        where us.Login == login && us.Password == password
-                        select us).FirstOrDefault();
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+                throw new ArgumentException();
+
+           return (from us in GetAll()
+                    where us.Login == login && us.Password == password.GetHashCode().ToString()
+                    select us).FirstOrDefault();
         }
 
         public void CreateClient(User user)
         {
+            if (user == null)
+                throw new ArgumentNullException();
+
             user.Role = Role.Client;
             Create(user);
         }
 
         public void CreateManager(User manager)
         {
+            if (manager == null)
+                throw new ArgumentNullException();
+
             manager.Role = Role.Manager;
             Create(manager);
         }
+
+        public IEnumerable<User> GetClients()
+        {
+            return from user in GetAll()
+                   where user.Role == Role.Client
+                   select user;
+        }
+
+        public IEnumerable<User> GetManagers()
+        {
+            return from user in GetAll()
+                   where user.Role == Role.Manager
+                   select user;
+        }
+
     }
 }

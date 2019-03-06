@@ -4,13 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Car Booking</title>
+    @Styles.Render("~/Content/css")
     <link href="~/Styles/layout.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
-    @*
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    *@
-    
 </head>
 <body>
     <header>
@@ -32,7 +28,7 @@
                         }
                         if (user.Role == CarBooking.DAL.Entities.Role.Admin)
                         {
-                            <li>@Html.ActionLink("Cars", "GetCars", "Cars")</li>
+                            <li>@Html.ActionLink("Cars", "GetAll", "Cars")</li>
                             <li>@Html.ActionLink("Clients", "GetUsers", "Users")</li>
                             <li>@Html.ActionLink("Managers", "GetManagers", "Users")</li>
                         }
@@ -65,10 +61,5 @@
         <hr />
         <p>&copy; @DateTime.Now.Year - Car Booking</p>
     </footer>
-    @*
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-    *@
 </body>
 </html>

@@ -1,0 +1,24 @@
+﻿.all-orders-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.order-wrapper{
+    width: calc(100% / 3);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.order-wrapper a{
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+.order-wrapper a:hover{
+    box-shadow: 0 0 20px black;
+}

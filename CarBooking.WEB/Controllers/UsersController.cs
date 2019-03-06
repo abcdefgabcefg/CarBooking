@@ -26,8 +26,12 @@ namespace CarBooking.WEB.Controllers
             return RedirectToAction("GetUserOrders", "Orders");
         }
 
+        public ActionResult CreateManager()
+        {
+            return View();
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult CreateManager(User user)
         {
             user.Role = Role.Manager;
@@ -38,6 +42,7 @@ namespace CarBooking.WEB.Controllers
 
         public ActionResult LogIn(string errorMessage)
         {
+            unitOfWork.Users.Get(null, string.Empty);
             ViewBag.ErrorMessage = errorMessage;
             return View();
         }
@@ -51,7 +56,18 @@ namespace CarBooking.WEB.Controllers
                 if (user.IsBlock != true)
                 {
                     Session["User"] = user;
-                    return RedirectToAction("GetUserOrders", "Orders"); 
+                    if (user.Role == Role.Client)
+                    {
+                        return RedirectToAction("GetUserOrders", "Orders");
+                    }
+                    else if(user.Role == Role.Manager)
+                    {
+                        return RedirectToAction("GetNotConfirmedAndFinished", "Orders");
+                    }
+                    else if(user.Role == Role.Admin)
+                    {
+                        return RedirectToAction("GetAll", "Cars");
+                    }
                 }
                 return RedirectToAction("LogIn", new { errorMessage = "Such user is block" });
             }
@@ -60,21 +76,51 @@ namespace CarBooking.WEB.Controllers
 
         public ActionResult BlockUser(int id)
         {
-            unitOfWork.Users.Block(id);
-            unitOfWork.Save();
+            var user = Session["User"] as User;
+            if (user !=  null && user.Role == Role.Admin)
+            {
+                unitOfWork.Users.Block(id);
+                unitOfWork.Save();
+                return RedirectToAction("GetUsers");
+            }
             return RedirectToAction("Index", "Cars");
         }
 
         public ActionResult UnBlockUser(int id)
         {
-            unitOfWork.Users.UnBlock(id);
-            unitOfWork.Save();
+            var user = Session["User"] as User;
+            if (user != null && user.Role == Role.Admin)
+            {
+                unitOfWork.Users.UnBlock(id);
+                unitOfWork.Save();
+                return RedirectToAction("GetUsers");
+            }
             return RedirectToAction("Index", "Cars");
         }
 
         public ActionResult LogOut()
         {
             Session["User"] = null;
+            return RedirectToAction("Index", "Cars");
+        }
+
+        public ActionResult GetUsers()
+        {
+            var user = Session["User"] as User;
+            if (user != null && user.Role == Role.Admin)
+            {
+                return View(unitOfWork.Users.GetClients().ToList());
+            }
+            return RedirectToAction("Index", "Cars");
+        }
+
+        public ActionResult GetManagers()
+        {
+            var user = Session["User"] as User;
+            if (user != null && user.Role == Role.Admin)
+            {
+                return View(unitOfWork.Users.GetManagers().ToList());
+            }
             return RedirectToAction("Index", "Cars");
         }
     }

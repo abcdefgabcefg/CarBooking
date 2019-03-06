@@ -1,75 +1,45 @@
 ﻿@model IEnumerable<CarBooking.DAL.Entities.Order>
 
 @{
-    ViewBag.Title = "GetUserOrders";
+    ViewBag.Title = "Orders";
 }
 
-<h2>GetUserOrders</h2>
+<link href="~/Styles/Order/userOrders.css" rel="stylesheet"/>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Car.CarTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Client.Login)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Manager.Login)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FinishDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PassportNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NeedDriver)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Car.CarTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Client.Login)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Manager.Login)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FinishDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PassportNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NeedDriver)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="orders-contaner">
+    @foreach (var item in Model)
+    {
+    <div class="ord-wrapper">
+        <p>Car: @item.Car.CarTitle</p>
+        <p>Start Date:  @item.StartDate</p>
+        <p>Finish Date: @item.FinishDate</p>
+        <p>Price: @item.Price$</p>
+        @switch (item.Status)
+        {
+            case CarBooking.DAL.Entities.Status.NotConfirmed:
+                <p>Status: Not Confirmed</p>
+                break;
+            case CarBooking.DAL.Entities.Status.Refused:
+                <p>Status: Refused</p>
+                <p>@item.ManagerComment</p>
+                @Html.ActionLink("Ok", "Delete", new { id = item.ID });
+                break;
+            case CarBooking.DAL.Entities.Status.Confirmed:
+                <p>Status: Wait for payment</p>
+                @Html.ActionLink("Pay", "Pay", new { id = item.ID });
+                break;
+            case CarBooking.DAL.Entities.Status.WPFR:
+                <p>Status: Wait for payment for repair</p>
+                <p>@item.RepairPrice</p>
+                @Html.ActionLink("Pay", "Delete", new { id = item.ID });
+                break;
+            case CarBooking.DAL.Entities.Status.Paid:
+                <p>Status: Paid</p>
+                break;
+            case CarBooking.DAL.Entities.Status.Finished:
+                <p>Status: Finished</p>
+                break;
+        }
+    </div>
+    }
+</div>

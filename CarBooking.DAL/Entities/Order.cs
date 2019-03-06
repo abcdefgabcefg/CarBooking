@@ -43,7 +43,7 @@ namespace CarBooking.DAL.Entities
         public virtual User Client { get; set; }
         public virtual User Manager { get; set; }
 
-        public decimal Price
+        public int Price
         {
             get
             {
@@ -52,7 +52,7 @@ namespace CarBooking.DAL.Entities
                     decimal price = Car.Price;
                     if (NeedDriver)
                         price += 20;
-                    return price * Convert.ToDecimal((StartDate - FinishDate).TotalHours);
+                    return Convert.ToInt32(price * Convert.ToDecimal((FinishDate - StartDate).TotalHours));
                 }
                 return 0;
             }
@@ -68,6 +68,6 @@ namespace CarBooking.DAL.Entities
 
     public enum Status
     {
-        NotConfirmed, Confirmed, Piad, Refused, Finished, WPFR
+        NotConfirmed, Confirmed, Paid, Refused, Finished, WPFR
     }
 }

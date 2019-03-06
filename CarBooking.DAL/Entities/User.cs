@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
 
 namespace CarBooking.DAL.Entities
 {
@@ -11,22 +13,18 @@ namespace CarBooking.DAL.Entities
     {
         public int ID { get; set; }
 
-        [MaxLength(50, ErrorMessage ="Max lenght is 50 syblos")]
         [Required]
+        [MaxLength(50, ErrorMessage ="Max length is 50 characters")]
+        [Index(IsUnique =true)]
         public string Login { get; set; }
 
         [Required]
-        [MaxLength(50, ErrorMessage = "Max lenght is 50 characters")]
-        [MinLength(4, ErrorMessage = "Min lenght is 4 characters")]
+        [MaxLength(50, ErrorMessage ="Max lenght is 50 characters")]
         public string Password { get; set; }
 
-        [Required]
         public Role Role { get; set; }
 
-        [Required]
         public bool IsBlock { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
     }
 
     public enum Role

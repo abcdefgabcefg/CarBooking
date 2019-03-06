@@ -1,57 +1,34 @@
 ﻿@model IEnumerable<CarBooking.DAL.Entities.Car>
 
 @{
-    ViewBag.Title = "GetAll";
+    ViewBag.Title = "Cars";
 }
 
-<h2>GetAll</h2>
+<link href="~/Styles/Cars/getAll.css" rel="stylesheet"/>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IsLuxury)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CarTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsFree)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsLuxury)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CarTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsFree)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ImagePath)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="container-fluid">
+    @Html.ActionLink("Create car", "Create", null, new { @class = "btn btn-light", @style = "margin-top:10px;"})
+    @{
+        var cars = Model as List<CarBooking.DAL.Entities.Car>;
+        int count = cars.Count / 3;
+        count += cars.Count % 3 != 0 ? 1 : 0;
+        int index = 0;
+        for (int counter = 0; counter < count; counter++)
+        {
+            <div class="row">
+                @for(var limit = index + 3; index < limit && index < cars.Count; index++)
+                { 
+                <div class="col-sm-4">
+                    <p>Car Title: @cars[index].CarTitle</p>
+                    <p>Price: @cars[index].Price$ per h</p>
+                    <p>Luxury: @cars[index].IsLuxury</p>
+                    <p>Free: @cars[index].IsFree</p>
+                    <p>Image Path: @cars[index].ImagePath</p>
+                    @Html.ActionLink("Edit", "Edit", new { id = cars[index].ID}, new {@class = "btn btn-light" })
+                    @Html.ActionLink("Delete", "Delete", new { id = cars[index].ID }, new { @class = "btn btn-light" })
+                </div>
+                }
+            </div>
+        }
+    }
+</div>

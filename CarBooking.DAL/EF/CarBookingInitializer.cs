@@ -128,7 +128,7 @@ namespace CarBooking.DAL.EF
                 new User
                 {
                     Login = "client",
-                    Password = "123456",
+                    Password = "123456".GetHashCode().ToString(),
                     Role = Role.Client,
                     IsBlock = false
                 },
@@ -136,7 +136,7 @@ namespace CarBooking.DAL.EF
                 new User
                 {
                     Login = "manager",
-                    Password = "123456",
+                    Password = "123456".GetHashCode().ToString(),
                     Role = Role.Manager,
                     IsBlock = false
                 },
@@ -144,68 +144,14 @@ namespace CarBooking.DAL.EF
                 new User
                 {
                     Login = "admin",
-                    Password = "123456",
+                    Password = "123456".GetHashCode().ToString(),
                     Role = Role.Admin,
                     IsBlock = false
                 }
             };
 
-            var orders = new[]
-            {
-                new Order
-                {
-                    StartDate = new DateTime(2019, 03, 22, 16, 00, 00),
-                    FinishDate = new DateTime(2019, 03, 26, 12, 00, 00),
-                    PassportNumber = "535565031",
-                    NeedDriver = false,
-                    CarID = 4,
-                    ClientID = 1,
-                    ManagerID = 2,
-                    Status = Status.Confirmed
-                },
-
-                new Order
-                {
-                    StartDate = new DateTime(2019, 03, 25, 11, 00, 00),
-                    FinishDate = new DateTime(2019, 04, 01, 22, 00, 00),
-                    PassportNumber = "168415759",
-                    NeedDriver = true,
-                    CarID = 7,
-                    ClientID = 1,
-                    ManagerID = 2,
-                    Status = Status.NotConfirmed
-                },
-
-                new Order
-                {
-                    StartDate = new DateTime(2019, 03, 28, 02, 00, 00),
-                    FinishDate = new DateTime(2019, 04, 11, 07, 00, 00),
-                    PassportNumber = "985351351",
-                    NeedDriver = true,
-                    CarID = 11,
-                    ClientID = 1,
-                    ManagerID = 2,
-                    Status = Status.NotConfirmed
-                },
-
-                new Order
-                {
-                    StartDate = new DateTime(2019, 04, 15, 13, 00, 00),
-                    FinishDate = new DateTime(2019, 04, 22, 06, 00, 00),
-                    PassportNumber = "568636513",
-                    NeedDriver = false,
-                    CarID = 12,
-                    ClientID = 1,
-                    ManagerID = 2,
-                    Status = Status.Confirmed
-                }
-            };
-
             context.Users.AddRange(users);
-            context.SaveChanges();
-
             context.Cars.AddRange(cars);
-            context.Orders.AddRange(orders);
             context.SaveChanges();
         }
     }

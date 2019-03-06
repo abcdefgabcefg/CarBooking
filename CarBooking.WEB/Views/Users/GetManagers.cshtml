@@ -1,0 +1,25 @@
+﻿@model IEnumerable<CarBooking.DAL.Entities.User>
+
+@{
+    ViewBag.Title = "Managers";
+}
+
+<div class="container-fluid">
+    @Html.ActionLink("Create", "CreateManager", null, new { @class = "btn btn-light"})
+    @{
+        var users = Model as List<CarBooking.DAL.Entities.User>;
+        var count = users.Count() / 12;
+        count += users.Count % 12 != 0 ? 1 : 0;
+        for (int counter = 0, index = 0; counter < count; counter++)
+        {
+            <div class="row">
+                @for (var limit = index + 12; index < limit && index < users.Count(); index++)
+                {
+                    <div class="col-sm-1">
+                        <p>Login: @users[index].Login</p>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

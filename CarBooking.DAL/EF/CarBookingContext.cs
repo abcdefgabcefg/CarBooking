@@ -21,7 +21,7 @@ namespace CarBooking.DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>().HasOptional<User>(order => order.Manager).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<Order>().HasOptional(order => order.Manager).WithMany().WillCascadeOnDelete(false);
         }
     }
 }

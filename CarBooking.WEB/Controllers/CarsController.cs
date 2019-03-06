@@ -42,7 +42,6 @@ namespace CarBooking.WEB.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IsLuxury,Price,CarTitle,ImagePath")] Car car)
         {
             if (ModelState.IsValid)
@@ -80,7 +79,6 @@ namespace CarBooking.WEB.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,IsLuxury,Price,CarTitle,ImagePath")] Car car)
         {
             if (ModelState.IsValid)
@@ -93,34 +91,8 @@ namespace CarBooking.WEB.Controllers
             return View(car);
         }
 
-        // GET: Cars/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            var user = Session["User"] as User;
-
-            if (user != null && user.Role == Role.Admin)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-
-                var car = unitOfWork.Cars.Get(id.Value);
-
-                if (car == null)
-                {
-                    return HttpNotFound();
-                }
-
-                return View(car); 
-            }
-            return RedirectToAction("Index");
-        }
-
         // POST: Cars/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
             unitOfWork.Cars.Delete(id);
             unitOfWork.Save();

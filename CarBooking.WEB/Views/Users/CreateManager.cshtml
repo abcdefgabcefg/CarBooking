@@ -1,0 +1,21 @@
+﻿@model CarBooking.DAL.Entities.User
+
+@{
+    ViewBag.Title = "CreateManager";
+}
+
+@using (Html.BeginForm("CreateManager", "Users", FormMethod.Post, new { @style="padding-top:20px"}))
+{
+    <div class="form-group">
+        @Html.LabelFor(user => user.Login)<br />
+        @Html.TextBoxFor(user => user.Login)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(user => user.Password)<br />
+        @Html.TextBoxFor(user => user.Password)
+    </div>
+
+    <input type="submit" class="btn btn-light"/>
+}
+

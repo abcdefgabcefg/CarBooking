@@ -21,14 +21,16 @@ namespace CarBooking.DAL.Repositories
         public void Create(Order item)
         {
             item.Status = Status.NotConfirmed;
+            item.Car.IsFree = false;
             db.Orders.Add(item);
         }
 
         public void Delete(int id)
         {
             var order = db.Orders.Find(id);
-            if (order.Status == Status.Refused || order.Status == Status.WPFR)
+            if (order.Status == Status.Refused || order.Status == Status.WPFR || order.Status == Status.Finished)
             {
+                order.Car.IsFree = true;
                 db.Orders.Remove(order);
             }
         }
@@ -84,7 +86,7 @@ namespace CarBooking.DAL.Repositories
             var order = Get(id);
             if (order.Status == Status.Confirmed)
             {
-                order.Status = Status.Piad; 
+                order.Status = Status.Paid; 
             }
         }
 
@@ -100,7 +102,7 @@ namespace CarBooking.DAL.Repositories
 
         private void Finish(Order order)
         {
-            if(order.Status == Status.Piad)
+            if(order.Status == Status.Paid)
             {
                 order.Status = Status.Finished;
             }
