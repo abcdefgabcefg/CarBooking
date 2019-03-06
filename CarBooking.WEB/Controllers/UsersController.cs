@@ -40,10 +40,8 @@ namespace CarBooking.WEB.Controllers
             return RedirectToAction("Index", "Cars");
         }
 
-        public ActionResult LogIn(string errorMessage)
+        public ActionResult LogIn()
         {
-            unitOfWork.Users.Get(null, string.Empty);
-            ViewBag.ErrorMessage = errorMessage;
             return View();
         }
 
@@ -51,27 +49,30 @@ namespace CarBooking.WEB.Controllers
         public ActionResult LogIn(string login, string password)
         {
             var user = unitOfWork.Users.Get(login, password);
-            if (user != null)
+            if (user == null)
             {
-                if (user.IsBlock != true)
-                {
-                    Session["User"] = user;
-                    if (user.Role == Role.Client)
-                    {
-                        return RedirectToAction("GetUserOrders", "Orders");
-                    }
-                    else if(user.Role == Role.Manager)
-                    {
-                        return RedirectToAction("GetNotConfirmedAndFinished", "Orders");
-                    }
-                    else if(user.Role == Role.Admin)
-                    {
-                        return RedirectToAction("GetAll", "Cars");
-                    }
-                }
-                return RedirectToAction("LogIn", new { errorMessage = "Such user is block" });
+                ModelState.AddModelError(string.Empty, "Such user not found");
             }
-            return RedirectToAction("LogIn", new { errorMessage = "Such user not found"});
+            else if(user.IsBlock)
+            {
+                ModelState.AddModelError(string.Empty, "Such user is block");
+            }
+            if (ModelState.IsValid)
+            {
+                Session["User"] = user;
+                switch (user.Role)
+                {
+                    case Role.Client:
+                        return RedirectToAction("GetUserOrders", "Orders");
+                    case Role.Manager:
+                        return RedirectToAction("GetNotConfirmedAndFinished", "Orders");
+                    case Role.Admin:
+                        return RedirectToAction("GetAll", "Cars");
+                    default:
+                        return RedirectToAction("Index", "Cars");
+                }
+            }
+            return View();
         }
 
         public ActionResult BlockUser(int id)

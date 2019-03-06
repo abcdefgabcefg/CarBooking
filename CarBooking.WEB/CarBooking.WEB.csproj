@@ -244,7 +244,6 @@
     <Content Include="Styles\Cars\getAll.css" />
     <Content Include="Styles\Cars\index.css" />
     <Content Include="Styles\layout.css" />
-    <Content Include="Styles\logIn.css" />
     <Content Include="Styles\Order\create.css" />
     <Content Include="Styles\Order\managerOrders.css" />
     <Content Include="Styles\Order\refuse.css" />

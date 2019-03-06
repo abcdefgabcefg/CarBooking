@@ -64,8 +64,8 @@ namespace CarBooking.DAL.Repositories
 
         public User Get(string login, string password)
         {
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
-                throw new ArgumentException();
+            if (login == null || password == null)
+                throw new ArgumentNullException();
 
            return (from us in GetAll()
                     where us.Login == login && us.Password == password.GetHashCode().ToString()

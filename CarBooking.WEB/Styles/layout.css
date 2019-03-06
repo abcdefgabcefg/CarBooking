@@ -54,3 +54,13 @@ ul.account-menu{
     cursor: context-menu;
     color: white;
 }
+
+.error-message, .validation-summary-errors ul li {
+    color: red;
+}
+
+.validation-summary-errors ul {
+    padding-left: 0;
+    padding-top: 10px;
+    list-style-type: none;
+}

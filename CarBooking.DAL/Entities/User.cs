@@ -16,10 +16,13 @@ namespace CarBooking.DAL.Entities
         [Required]
         [MaxLength(50, ErrorMessage ="Max length is 50 characters")]
         [Index(IsUnique =true)]
+        [Display(Name ="Login: ")]
         public string Login { get; set; }
 
         [Required]
         [MaxLength(50, ErrorMessage ="Max lenght is 50 characters")]
+        [Display(Name ="Password: ")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public Role Role { get; set; }

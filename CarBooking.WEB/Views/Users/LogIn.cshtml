@@ -1,19 +1,69 @@
-﻿
+﻿@model CarBooking.DAL.Entities.User
+
 @{
     ViewBag.Title = "Log In";
 }
 
-<link href="~/Styles/logIn.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.ValidationSummary()
+    </div>
 
-<form autocomplete="off" action="LogIn" method="post">
-    <span>Login:</span><br />
-    <input type="text" name="login" pattern=".{0,50}" required title="Required filed. Max lenght is 50 character"><br>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Login)
+        @Html.TextBoxFor(user => user.Login, new { @class="form-control"})
+        <span id="login-error" class="error-message"></span>
+    </div>
 
-    <span>Password:</span><br />
-    <input type="password" name="password" pattern=".{4,50}" required title="Required filed. Lenght is from 4 to 50 character"><br>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Password)
+        @Html.PasswordFor(user => user.Password, new { @class = "form-control" })
+        <span id="password-error" class="error-message"></span>
+    </div>
 
-    <input type="submit"><br />
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="OK" style="margin-left: 230px;"/>
+    </div>
+}
 
-    <span class="error">@ViewBag.ErrorMessage</span>
-</form>
+<script>
 
+    document.forms[0].addEventListener('submit', function (event) {
+        let result = true;
+        const login = document.querySelector('#Login').value;
+        const loginError = document.querySelector('#login-error');
+        loginError.innerHTML = '';
+        if (login == '') {
+            loginError.innerHTML = 'Required field<br>';
+            result = false;
+        }
+        if (login.length > 50) {
+            loginError.innerHTML += 'Max length is 50 characters';
+            result = false;
+        }
+
+        const password = document.querySelector('#Password').value;
+        const passwordError = document.querySelector('#password-error');
+        passwordError.innerHTML = '';
+        if (password == '') {
+            passwordError.innerHTML = 'Required field<br>';
+            result = false;
+        }
+        if (password.length < 4) {
+            passwordError.innerHTML += 'Min length is 4 characters<br>';
+            result = false;
+        }
+        if (password.length > 50) {
+            passwordError.innerHTML += 'Max length is 50 characters';
+            result = false;
+        }
+
+        if (!result) {
+            event.preventDefault();
+            const summaryErrors = document.querySelector('.validation-summary-errors ul');
+            if (summaryErrors !== null)
+                summaryErrors.innerHTML = '';
+        }
+    });
+</script>
