@@ -10,6 +10,8 @@ namespace CarBooking.WEB.Controllers
 {
     public class UsersController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private EFUnitOfWork unitOfWork = new EFUnitOfWork();
 
         public ActionResult Register()
@@ -32,11 +34,13 @@ namespace CarBooking.WEB.Controllers
                 {
                     unitOfWork.Save();
                     Session["User"] = user;
+                    log.Info(string.Format("User with id = {0} was registered", user.ID));
                     return RedirectToAction("GetUserOrders", "Orders");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
                     return View("InputUser");
                 }
             }
@@ -45,8 +49,13 @@ namespace CarBooking.WEB.Controllers
 
         public ActionResult CreateManager()
         {
-            ViewBag.Title = "Create Manager";
-            return View("InputUser");
+            var user = Session["User"] as User;
+            if (user != null && user.Role == Role.Admin)
+            {
+                ViewBag.Title = "Create Manager";
+                return View("InputUser"); 
+            }
+            return RedirectToAction("Index", "Cars");
         }
 
         [HttpPost]
@@ -62,11 +71,13 @@ namespace CarBooking.WEB.Controllers
                 try
                 {
                     unitOfWork.Save();
+                    log.Info(string.Format("Manager with id = {0} was registered", user.ID));
                     return RedirectToAction("GetManagers");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
                     return View("InputUser");
                 }
             }
@@ -115,8 +126,17 @@ namespace CarBooking.WEB.Controllers
             if (user !=  null && user.Role == Role.Admin)
             {
                 unitOfWork.Users.Block(id);
-                unitOfWork.Save();
-                return RedirectToAction("GetUsers");
+                try
+                {
+                    unitOfWork.Save();
+                    log.Info(string.Format("User with id = {0} was blocked", id));
+                    return RedirectToAction("GetUsers");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
             }
             return RedirectToAction("Index", "Cars");
         }
@@ -127,8 +147,17 @@ namespace CarBooking.WEB.Controllers
             if (user != null && user.Role == Role.Admin)
             {
                 unitOfWork.Users.UnBlock(id);
-                unitOfWork.Save();
-                return RedirectToAction("GetUsers");
+                try
+                {
+                    unitOfWork.Save();
+                    log.Info(string.Format("User with id = {0} was unblocked", id));
+                    return RedirectToAction("GetUsers");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
             }
             return RedirectToAction("Index", "Cars");
         }
