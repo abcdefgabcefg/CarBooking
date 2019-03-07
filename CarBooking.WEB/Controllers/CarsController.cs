@@ -16,6 +16,7 @@ namespace CarBooking.WEB.Controllers
     public class CarsController : Controller
     {
         private EFUnitOfWork unitOfWork = new EFUnitOfWork();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: Cars
         public ActionResult Index(string search, bool? isLuxury, SortOrder? sortOrder, SortDirection? sortDirection)
@@ -50,11 +51,13 @@ namespace CarBooking.WEB.Controllers
                 try
                 {
                     unitOfWork.Save();
+                    log.Info(string.Format("Car with id = {0} was created", car.ID));
                     return RedirectToAction("Index");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
                     return View();
                 }
             }
@@ -94,11 +97,13 @@ namespace CarBooking.WEB.Controllers
                 try
                 {
                     unitOfWork.Save();
+                    log.Info(string.Format("Car with id = {0} was edited", car.ID));
                     return RedirectToAction("GetAll");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
                     return View(car);
                 }
             }
@@ -108,9 +113,18 @@ namespace CarBooking.WEB.Controllers
         // POST: Cars/Delete/5
         public ActionResult Delete(int id)
         {
-            unitOfWork.Cars.Delete(id);
-            unitOfWork.Save();
-            return RedirectToAction("Index");
+            try
+            {
+                unitOfWork.Cars.Delete(id);
+                unitOfWork.Save();
+                log.Info(string.Format("Car with id = {0} was deleted", id));
+                return RedirectToAction("GetAll");
+            }
+            catch (Exception ex)
+            {
+                log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                return RedirectToAction("Index");
+            }
         }
 
         public ActionResult GetAll()
