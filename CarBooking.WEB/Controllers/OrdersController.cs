@@ -14,8 +14,8 @@ namespace CarBooking.WEB.Controllers
 {
     public class OrdersController : Controller
     {
-
         private EFUnitOfWork unitOfWork = new EFUnitOfWork();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: Orders
         public ActionResult Index()
@@ -49,10 +49,12 @@ namespace CarBooking.WEB.Controllers
                 try
                 {
                     unitOfWork.Save();
+                    log.Info(string.Format("Car with id = {0} was ordered", order.ID));
                     return RedirectToAction("GetUserOrders");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
                     ModelState.AddModelError(string.Empty, "Error when trying to save changes. Please, try again");
                     ViewBag.CarID = order.CarID;
                     return View();
@@ -91,10 +93,19 @@ namespace CarBooking.WEB.Controllers
             if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
             {
                 unitOfWork.Orders.Confirm(id);
-                unitOfWork.Save();
-                return RedirectToAction("GetNotConfirmedAndFinished");
+                try
+                {
+                    unitOfWork.Save();
+                    log.Info(string.Format("Order with id = {0} was confirmed", id));
+                    return RedirectToAction("GetNotConfirmedAndFinished");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
             }
-            return RedirectToAction("Index", "Car");
+            return RedirectToAction("Index", "Cars");
         }
 
         public ActionResult Refuse(int id)
@@ -110,10 +121,19 @@ namespace CarBooking.WEB.Controllers
             if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
             {
                 unitOfWork.Orders.Refuse(id, comment);
-                unitOfWork.Save();
-                return RedirectToAction("GetNotConfirmedAndFinished");
+                try
+                {
+                    unitOfWork.Save();
+                    log.Info(string.Format("Order with id = {0} was refused", id));
+                    return RedirectToAction("GetNotConfirmedAndFinished");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
             }
-            return RedirectToAction("Index", "Car");
+            return RedirectToAction("Index", "Cars");
         }
 
         // GET: Orders/Delete/5
@@ -123,14 +143,23 @@ namespace CarBooking.WEB.Controllers
             if (user != null)
             {
                 unitOfWork.Orders.Delete(id);
-                unitOfWork.Save();
-                if (user.Role == Role.Client)
+                try
                 {
-                    return RedirectToAction("GetUserOrders");
+                    unitOfWork.Save();
+                    log.Info(string.Format("Order with id = {0} was deleted", id));
+                    if (user.Role == Role.Client)
+                    {
+                        return RedirectToAction("GetUserOrders");
+                    }
+                    else
+                    {
+                        return RedirectToAction("GetNotConfirmedAndFinished");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return RedirectToAction("GetNotConfirmedAndFinished");
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
                 }
             }
             return RedirectToAction("Index", "Cars");
@@ -142,14 +171,23 @@ namespace CarBooking.WEB.Controllers
             if (user != null)
             {
                 unitOfWork.Orders.Pay(id);
-                unitOfWork.Save();
-                return RedirectToAction("GetUserOrders");
+                try
+                {
+                    unitOfWork.Save();
+                    log.Info(string.Format("Order with id = {0} was paid", id));
+                    return RedirectToAction("GetUserOrders");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
             }
-            return RedirectToAction("Index", "Car");
+            return RedirectToAction("Index", "Cars");
         }
 
         public ActionResult ToRepair(int id)
-        {
+        { 
             ViewBag.ID = id;
             return View();
         }
@@ -161,10 +199,19 @@ namespace CarBooking.WEB.Controllers
             if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
             {
                 unitOfWork.Orders.ToRepair(id, repairPrice);
-                unitOfWork.Save();
-                return RedirectToAction("GetNotConfirmedAndFinished");
+                try
+                {
+                    unitOfWork.Save();
+                    log.Info(string.Format("Car with id = {0} require repair", unitOfWork.Orders.Get(id).CarID));
+                    return RedirectToAction("GetNotConfirmedAndFinished");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
             }
-            return RedirectToAction("Index", "Car");
+            return RedirectToAction("Index", "Cars");
         }
 
         protected override void Dispose(bool disposing)

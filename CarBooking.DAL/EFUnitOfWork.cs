@@ -53,6 +53,7 @@ namespace CarBooking.DAL
         {
             try
             {
+                //throw new Exception();
                 db.SaveChanges();
             }
             catch(Exception e)
