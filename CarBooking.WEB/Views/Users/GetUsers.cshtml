@@ -4,21 +4,24 @@
     ViewBag.Title = "Users";
 }
 
+
 <div class="container-fluid">
     @{ 
         var users = Model as List<CarBooking.DAL.Entities.User>;
-        var count = users.Count() / 12;
-        count += users.Count % 12 != 0 ? 1 : 0;
+        var count = users.Count() / 4;
+        count += users.Count % 4 != 0 ? 1 : 0;
         for(int counter = 0, index = 0; counter < count; counter++)
         {
             <div class="row">
-                @for(var limit = index + 12; index < limit && index < users.Count(); index++)
+                @for(var limit = index + 4; index < limit && index < users.Count(); index++)
                 {
-                <div class="col-sm-1">
-                    <p>Login: @users[index].Login</p>
-                    <p>Block: @users[index].IsBlock</p>
-                    @Html.ActionLink("Block", "BlockUser", new { id = users[index].ID }, new { @class = "btn btn-light" })
-                    @Html.ActionLink("Unblock", "UnBlockUser", new { id = users[index].ID }, new { @class = "btn btn-light" })
+                <div class="col-lg-3">
+                    <div class="item-wrapper">
+                        <p>Login: @users[index].Login</p>
+                        <p>Block: @users[index].IsBlock</p>
+                        @Html.ActionLink("Block", "BlockUser", new { id = users[index].ID }, new { @class = "btn btn-primary small-margin" })
+                        @Html.ActionLink("Unblock", "UnBlockUser", new { id = users[index].ID }, new { @class = "btn btn-primary small-margin" })
+                    </div>
                 </div>
                 }
             </div>

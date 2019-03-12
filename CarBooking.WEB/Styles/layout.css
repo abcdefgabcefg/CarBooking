@@ -68,3 +68,18 @@ ul.account-menu{
 .form-submit-button {
     margin-left: 230px;
 }
+
+.item-wrapper {
+    margin: 20px;
+    padding: 60px 20px;
+    border: 1px solid #ced4da;
+    text-align: center;
+}
+
+.big-margin{
+    margin: 20px;
+}
+
+.small-margin{
+    margin: 5px;
+}
