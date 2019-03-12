@@ -49,3 +49,34 @@
 form{
     padding-top: 20px;
 }
+
+form input[type="text"]{
+    max-width: 100%;
+    width: 75%;
+}
+
+form input[type="submit"]{
+    margin-left: 75%;
+}
+
+.checkbox{
+    display: none;
+}
+
+.checkbox-label{
+    font-size: 25px;
+}
+
+.checkbox-wrapper {
+    text-align: center;
+}
+
+.checkbox-wrapper:hover, .checkbox-active{
+    box-shadow: 0 0 5px gray;
+}
+
+#right-arrow{
+    position: absolute;
+    left: -12px;
+    width: 28px;
+}

@@ -6,22 +6,53 @@
 
 <link href="~/Styles/Cars/index.css" rel="stylesheet" />
 
-@using (Html.BeginForm("Index", "Cars", FormMethod.Post, new { @class = "form-inline" }))
+@using (Html.BeginForm())
 {
-    <div class="form-group">
-        @Html.TextBox("search", "", new { @class = "form-control"})
+<div class="row">
+    <div class="col-2">
+        <div class="form-group">
+            <select name="sortOrder" class="form-control">
+                <option value="1">Price</option>
+                <option value="2">Name</option>
+            </select>
+        </div>
     </div>
-    <div class="form-group">
-        <select name="sortOrder" class="form-control">
-            <option value="1">Price</option>
-            <option value="2">Name</option>
-        </select>
+    <div class="col-1">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group checkbox-wrapper">
+                        <label for="checkboxUp" class="form-check-label checkbox-label">&uarr;</label>
+                        @Html.CheckBox("isSortDirectionUp", new { @class = "checkbox", @id="checkboxUp"})
+                        <div style="display:none;"></div>
+                    </div>
+                </div>
+            <div class="col-6">
+                <div class="form-group checkbox-wrapper" id="right-arrow">
+                    <label for="checkboxDown" class="form-check-label checkbox-label">&darr;</label>
+                    @Html.CheckBox("isSortDirectionDown", new { @class = "checkbox", @id="checkboxDown"})
+                </div>
+            </div>
+            </div>  
+        </div>
+    <div class="col-9">
+        <div class="form-group">
+            @Html.TextBox("search", "", new { @class = "form-control" })
+        </div>
     </div>
-    <div class="form-group">
-        @Html.Label("Luxury: ", new { @class = "form-check-label" })
-        @Html.CheckBox("isLuxury")
     </div>
-    <input type="submit" class="btn btn-light" value="OK" />
+<div class="row">
+    <div class="col-2">
+        <div class="form-group">
+            @Html.Label("Only luxury: ", new { @class = "form-check-label" })
+            @Html.CheckBox("isLuxury")
+        </div>
+    </div>
+    <div class="col-10">
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="OK" />
+        </div>
+    </div>
+</div>
 }
 
 <div class="cars-wrapper">
@@ -48,3 +79,27 @@
         </div>
     }
 </div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.checkbox');
+    const checkboxWrappers = document.querySelectorAll('.checkbox-wrapper');
+    for (let checkbox of checkboxes) {
+        checkbox.addEventListener('click', (event) => {
+            for (let checkboxWrapper of checkboxWrappers) {
+                if (checkboxWrapper.innerHTML !== event.target.parentElement.innerHTML) {
+                    checkboxWrapper.classList.remove('checkbox-active');
+                }
+            }
+            for (let checkbox of checkboxes) {
+                console.log(checkbox.checked);
+                if (checkbox.id !== event.target.parentElement.childNodes[3].id) {
+                    checkbox.checked = false;
+                }
+            }
+            event.target.parentElement.classList.toggle('checkbox-active'); 
+        });
+    }
+    for (let checkbox of checkboxes) {
+        checkbox.checked = false;
+    }
+</script>

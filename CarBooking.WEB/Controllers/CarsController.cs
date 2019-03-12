@@ -19,13 +19,22 @@ namespace CarBooking.WEB.Controllers
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: Cars
-        public ActionResult Index(string search, bool? isLuxury, SortOrder? sortOrder, SortDirection? sortDirection)
+        public ActionResult Index(string search, bool? isLuxury, SortOrder? sortOrder, bool? isSortDirectionUp, bool? isSortDirectionDown)
         {
             if (search == null)
             {
                 search = string.Empty;
             }
-            return View(unitOfWork.Cars.Get(search, isLuxury.GetValueOrDefault(), sortOrder.GetValueOrDefault(), sortDirection.GetValueOrDefault()).ToList());
+            SortDirection sortDirection = SortDirection.None;
+            if (isSortDirectionUp == null || isSortDirectionUp.GetValueOrDefault())
+            {
+                sortDirection = SortDirection.ASC;
+            }
+            if (isSortDirectionDown.GetValueOrDefault())
+            {
+                sortDirection = SortDirection.DESC;
+            }
+            return View(unitOfWork.Cars.Get(search, isLuxury.GetValueOrDefault(), sortOrder.GetValueOrDefault(), sortDirection).ToList());
         }
 
         // GET: Cars/Create
