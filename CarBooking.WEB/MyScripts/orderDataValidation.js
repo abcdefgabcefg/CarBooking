@@ -35,7 +35,7 @@
 
     const passportNumberError = document.querySelector('#passport-number-error');
     passportNumberError.innerHTML = '';
-    if (!/\d{9}/.test(document.querySelector('#PassportNumber').value)) {
+    if (! new RegExp('^\\d{9}$').test(document.querySelector('#PassportNumber').value)) {
         passportNumberError.innerHTML = 'Need 9 numbers';
         result = false;
     }
