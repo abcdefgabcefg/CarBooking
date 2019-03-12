@@ -24,7 +24,7 @@
                         }
                         if (user.Role == CarBooking.DAL.Entities.Role.Manager)
                         {
-                            <li>@Html.ActionLink("Orders", "GetNotConfirmedAndFinished", "Orders")</li>
+                            <li>@Html.ActionLink("DashBoard", "DashBoard", "Orders")</li>
                         }
                         if (user.Role == CarBooking.DAL.Entities.Role.Admin)
                         {

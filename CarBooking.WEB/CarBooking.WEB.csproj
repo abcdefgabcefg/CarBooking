@@ -249,9 +249,10 @@
     <Content Include="Styles\Cars\getAll.css" />
     <Content Include="Styles\Cars\index.css" />
     <Content Include="Styles\layout.css" />
+    <Content Include="Styles\enumeration.css" />
     <Content Include="Styles\Order\managerOrders.css" />
     <Content Include="Styles\Order\refuse.css" />
-    <Content Include="Styles\Order\userOrders.css" />
+    <Content Include="Styles\popUpForm.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -269,14 +270,10 @@
     <Content Include="Views\Cars\Edit.cshtml" />
     <Content Include="Views\Cars\Index.cshtml" />
     <Content Include="Views\Orders\Create.cshtml" />
-    <Content Include="Views\Orders\Delete.cshtml" />
-    <Content Include="Views\Orders\Edit.cshtml" />
-    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Users\InputUser.cshtml" />
     <Content Include="Views\Cars\GetAll.cshtml" />
-    <Content Include="Views\Orders\GetNotConfirmedAndFinished.cshtml" />
+    <Content Include="Views\Orders\DashBoard.cshtml" />
     <Content Include="Views\Orders\GetUserOrders.cshtml" />
-    <Content Include="Views\Orders\Refuse.cshtml" />
     <Content Include="Views\Orders\ToRepair.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -289,6 +286,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Users\GetUsers.cshtml" />
     <Content Include="Views\Users\GetManagers.cshtml" />
+    <Content Include="Views\Orders\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

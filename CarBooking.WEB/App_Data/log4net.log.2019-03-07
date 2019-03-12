@@ -1,0 +1,33 @@
+2019-03-07 17:46:36,484 INFO CarBooking.WEB.Controllers.UsersController - Log from Log in method
+2019-03-07 17:55:25,333 INFO CarBooking.WEB.Controllers.UsersController - User with id = 5 was registered
+2019-03-07 17:58:00,521 ERROR CarBooking.WEB.Controllers.UsersController - Error when trying to save changes to database
+2019-03-07 18:00:23,055 ERROR CarBooking.WEB.Controllers.UsersController - Error when trying to save changes to database.Exception of type 'System.Exception' was thrown.
+2019-03-07 18:19:00,239 INFO CarBooking.WEB.Controllers.UsersController - Manager with id = 6 was created
+2019-03-07 18:20:16,457 INFO CarBooking.WEB.Controllers.UsersController - Manager with id = 7 was registered
+2019-03-07 18:23:44,282 ERROR CarBooking.WEB.Controllers.UsersController - Error when trying to save changes to database.Exception of type 'System.Exception' was thrown.
+2019-03-07 18:55:44,737 INFO CarBooking.WEB.Controllers.UsersController - User with id = 1 was blocked
+2019-03-07 19:01:44,185 ERROR CarBooking.WEB.Controllers.UsersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:06:16,139 INFO CarBooking.WEB.Controllers.UsersController - User with id = 1 was blocked
+2019-03-07 19:06:58,084 INFO CarBooking.WEB.Controllers.UsersController - User with id = 1 was unblocked
+2019-03-07 19:08:21,822 INFO CarBooking.WEB.Controllers.UsersController - User with id = 5 was unblocked
+2019-03-07 19:09:15,373 ERROR CarBooking.WEB.Controllers.UsersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:19:35,501 INFO CarBooking.WEB.Controllers.OrdersController - Car with id = 7 was ordered
+2019-03-07 19:22:46,819 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:25:30,528 INFO CarBooking.WEB.Controllers.OrdersController - Order with id = {0} was confirmed
+2019-03-07 19:26:40,800 INFO CarBooking.WEB.Controllers.OrdersController - Order with id = 2 was confirmed
+2019-03-07 19:28:54,043 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:29:51,219 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:36:18,191 INFO CarBooking.WEB.Controllers.OrdersController - Order with id = 3 was refused
+2019-03-07 19:37:05,313 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:42:37,163 INFO CarBooking.WEB.Controllers.OrdersController - Order with id = 1 was paid
+2019-03-07 19:43:36,810 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 19:49:21,243 INFO CarBooking.WEB.Controllers.OrdersController - Car width id = 1 require repair
+2019-03-07 19:51:54,346 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 20:08:12,277 INFO CarBooking.WEB.Controllers.OrdersController - Order with id = 3 was deleted
+2019-03-07 20:08:56,492 ERROR CarBooking.WEB.Controllers.OrdersController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 20:15:30,051 INFO CarBooking.WEB.Controllers.CarsController - Car with id = 13 was created
+2019-03-07 20:17:25,933 ERROR CarBooking.WEB.Controllers.CarsController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 20:22:41,868 INFO CarBooking.WEB.Controllers.CarsController - Car with id = 13 was edited
+2019-03-07 20:23:32,786 ERROR CarBooking.WEB.Controllers.CarsController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 20:26:42,370 ERROR CarBooking.WEB.Controllers.CarsController - Error when trying to save changes to database. Exception of type 'System.Exception' was thrown.
+2019-03-07 20:28:14,021 INFO CarBooking.WEB.Controllers.CarsController - Car with id = 13 was edited

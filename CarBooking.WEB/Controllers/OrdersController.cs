@@ -66,12 +66,12 @@ namespace CarBooking.WEB.Controllers
             return View();
         }
 
-        public ActionResult GetNotConfirmedAndFinished()
+        public ActionResult DashBoard()
         {
             var user = Session["User"] as User;
             if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
             {
-                return View(unitOfWork.Orders.GetNotConfirmedAndFinished().ToList());
+                return View(unitOfWork.Orders.CreateDashBoard().ToList());
             }
             return RedirectToAction("Index", "Cars");
         }
@@ -81,7 +81,7 @@ namespace CarBooking.WEB.Controllers
             var user = Session["User"] as User;
             if (user != null)
             {
-                return View(unitOfWork.Orders.GetUserOrders(user.ID));
+                return View(unitOfWork.Orders.GetUserOrders(user.ID).ToList());
             }
             return RedirectToAction("Index", "Cars");
         }
@@ -97,7 +97,7 @@ namespace CarBooking.WEB.Controllers
                 {
                     unitOfWork.Save();
                     log.Info(string.Format("Order with id = {0} was confirmed", id));
-                    return RedirectToAction("GetNotConfirmedAndFinished");
+                    return RedirectToAction("DashBoard");
                 }
                 catch (Exception ex)
                 {
@@ -106,12 +106,6 @@ namespace CarBooking.WEB.Controllers
                 }
             }
             return RedirectToAction("Index", "Cars");
-        }
-
-        public ActionResult Refuse(int id)
-        {
-            ViewBag.OrderID = id;
-            return View();
         }
 
         [HttpPost]
@@ -125,7 +119,7 @@ namespace CarBooking.WEB.Controllers
                 {
                     unitOfWork.Save();
                     log.Info(string.Format("Order with id = {0} was refused", id));
-                    return RedirectToAction("GetNotConfirmedAndFinished");
+                    return RedirectToAction("DashBoard");
                 }
                 catch (Exception ex)
                 {
@@ -153,7 +147,7 @@ namespace CarBooking.WEB.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("GetNotConfirmedAndFinished");
+                        return RedirectToAction("DashBoard");   
                     }
                 }
                 catch (Exception ex)
@@ -193,17 +187,17 @@ namespace CarBooking.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult ToRepair(int id, decimal repairPrice)
+        public ActionResult ToRepair(int id, decimal repairPrice, string comment)
         {
             var user = Session["User"] as User;
             if (user != null && (user.Role == Role.Manager || user.Role == Role.Admin))
             {
-                unitOfWork.Orders.ToRepair(id, repairPrice);
+                unitOfWork.Orders.ToRepair(id, repairPrice, comment);
                 try
                 {
                     unitOfWork.Save();
                     log.Info(string.Format("Car with id = {0} require repair", unitOfWork.Orders.Get(id).CarID));
-                    return RedirectToAction("GetNotConfirmedAndFinished");
+                    return RedirectToAction("DashBoard");
                 }
                 catch (Exception ex)
                 {
@@ -213,6 +207,55 @@ namespace CarBooking.WEB.Controllers
             }
             return RedirectToAction("Index", "Cars");
         }
+
+        public ActionResult Update(int id)
+        {
+            if (Session["User"] as User != null)
+            {
+                return View(unitOfWork.Orders.Get(id)); 
+            }
+            return RedirectToAction("Index", "Cars");
+        }
+
+        [HttpPost]
+        public ActionResult Update(Order order)
+        {
+            if (Session["User"] as User != null)
+            {
+                order.Car = unitOfWork.Cars.Get(order.CarID);
+                unitOfWork.Orders.Update(order);
+                try
+                {
+                    unitOfWork.Save();
+                    return RedirectToAction("GetUserOrders");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
+            }
+            return RedirectToAction("Index", "Cars");
+        }
+
+        public ActionResult PayRepair(int id)
+        {
+            if (Session["User"] as User != null)
+            {
+                unitOfWork.Orders.PayRepair(id);
+                try
+                {
+                    unitOfWork.Save();
+                    return RedirectToAction("GetUserOrders");
+                }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("{0}. {1}", ex.Message, ex.InnerException.Message));
+                    return RedirectToAction("Index", "Cars");
+                }
+            }
+            return RedirectToAction("Index", "Cars");
+        } 
 
         protected override void Dispose(bool disposing)
         {

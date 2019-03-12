@@ -4,42 +4,97 @@
     ViewBag.Title = "Orders";
 }
 
-<link href="~/Styles/Order/userOrders.css" rel="stylesheet"/>
+<link href="~/Styles/enumeration.css" rel="stylesheet" />
 
-<div class="orders-contaner">
-    @foreach (var item in Model)
-    {
-    <div class="ord-wrapper">
-        <p>Car: @item.Car.CarTitle</p>
-        <p>Start Date:  @item.StartDate</p>
-        <p>Finish Date: @item.FinishDate</p>
-        <p>Price: @item.Price$</p>
-        @switch (item.Status)
-        {
-            case CarBooking.DAL.Entities.Status.NotConfirmed:
-                <p>Status: Not Confirmed</p>
-                break;
-            case CarBooking.DAL.Entities.Status.Refused:
-                <p>Status: Refused</p>
-                <p>@item.ManagerComment</p>
-                @Html.ActionLink("Ok", "Delete", new { id = item.ID });
-                break;
-            case CarBooking.DAL.Entities.Status.Confirmed:
-                <p>Status: Wait for payment</p>
-                @Html.ActionLink("Pay", "Pay", new { id = item.ID });
-                break;
-            case CarBooking.DAL.Entities.Status.WPFR:
-                <p>Status: Wait for payment for repair</p>
-                <p>@item.RepairPrice</p>
-                @Html.ActionLink("Pay", "Delete", new { id = item.ID });
-                break;
-            case CarBooking.DAL.Entities.Status.Paid:
-                <p>Status: Paid</p>
-                break;
-            case CarBooking.DAL.Entities.Status.Finished:
-                <p>Status: Finished</p>
-                break;
-        }
-    </div>
+<div>
+    @{ 
+            var orders = Model as List<CarBooking.DAL.Entities.Order>;
+            int count = orders.Count();
+            int rowCount = count / 3;
+            int reminder = count % 3;
+            rowCount += reminder % 3 != 0 ? 1 : 0;
+            int index = 0;
+            for (int row = 1; row <= rowCount; row++)
+            {
+            <div class="row">
+                @for (int column = 1; column <= 3 && index < count; column++, index++)
+                {
+                    <div class="col-4">
+                        <div class="container item-wrapper">
+                            @{
+                                CarBooking.DAL.Entities.Order order = orders[index];
+
+                                <p>@string.Format("Title: {0}", order.Car.CarTitle)</p>
+
+                                <p>@string.Format("Price: {0}$", order.Price)</p>
+
+                                <p>@string.Format("Start Date: {0}", order.StartDate)</p>
+
+                                <p>@string.Format("Finish Date: {0}", order.FinishDate)</p>
+
+                                if (order.RepairPrice != null)
+                                {
+                                    <p>@string.Format("Repair Price: {0}$", order.RepairPrice)</p>
+                                }
+                                if (!string.IsNullOrEmpty(order.ManagerComment))
+                                {
+                                    <p>@string.Format("Manager Comment: {0}", order.ManagerComment)</p>
+                                }
+                                string status = string.Empty;
+                                switch (order.Status)
+                                {
+                                    case CarBooking.DAL.Entities.Status.Created:
+                                        status = "wait for manager answer";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Change", "Update", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        @Html.ActionLink("Cancel", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.Confirmed:
+                                        status = "confirmed. Wait for payment";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Pay", "Pay", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        @Html.ActionLink("Cancel", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.NotAnswered:
+                                        status = "time out. Manager not answered or you don't pay order. Please, try again";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Try Again", "Update", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        @Html.ActionLink("Delete", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.Refused:
+                                        status = "refused. ";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Try Again", "Update", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        @Html.ActionLink("Delete", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.Paid:
+                                        status = "paid. You can use car";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Cancel", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.Finished:
+                                        status = "finished. Manager will check car.";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.WaitPaymentForRepair:
+                                        status = "car need payment for repair.";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Pay", "PayRepair", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.RepairPaid:
+                                        status = "repair was paid. Manager will finish order";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        break;
+                                }
+                            }
+                        </div>
+                    </div>
+                 }
+            </div>
+                                }
+                                if(count == 0)
+                                {
+                                    <p class="alert alert-info">You don't have orders yet</p>
+                                }
     }
 </div>

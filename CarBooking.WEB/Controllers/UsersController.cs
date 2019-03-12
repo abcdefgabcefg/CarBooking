@@ -110,7 +110,7 @@ namespace CarBooking.WEB.Controllers
                     case Role.Client:
                         return RedirectToAction("GetUserOrders", "Orders");
                     case Role.Manager:
-                        return RedirectToAction("GetNotConfirmedAndFinished", "Orders");
+                        return RedirectToAction("DashBoard", "Orders");
                     case Role.Admin:
                         return RedirectToAction("GetAll", "Cars");
                     default:

@@ -5,7 +5,7 @@
     const startDateError = document.querySelector('#start-date-error');
     startDateError.innerHTML = '';
     if (isNaN(startDate)) {
-        startDateError.innerHTML = 'Required format: mm-dd-yy (hh-mm)';
+        startDateError.innerHTML = 'Required format: mm-dd-yy hh:mm';
         result = false;
     }
     else if (startDate < Date.now()) {
@@ -17,13 +17,13 @@
     const finishDateError = document.querySelector('#finish-date-error');
     finishDateError.innerHTML = '';
     if (isNaN(finishDate)) {
-        finishDateError.innerHTML = 'Required format: mm-dd-yy (hh-mm)';
+        finishDateError.innerHTML = 'Required format: mm-dd-yy hh:mm';
         result = false;
     }
 
     if (result) {
         const time = (finishDate - startDate) / 1000 / 60 / 60;
-        if (time < 1) {
+        if (time < 1 / 60) {
             finishDateError.innerHTML = 'Min time is 1 h';
             result = false;
         }

@@ -56,6 +56,11 @@ namespace CarBooking.DAL.Entities
 
     public enum Status
     {
-        NotConfirmed, Confirmed, Paid, Refused, Finished, WPFR
+        Created,
+        Confirmed, NotAnswered, Refused,
+        Paid,
+        Finished,
+        WaitPaymentForRepair,
+        RepairPaid
     }
 }

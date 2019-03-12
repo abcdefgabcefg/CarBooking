@@ -1,0 +1,132 @@
+﻿@model IEnumerable<CarBooking.DAL.Entities.Order>
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<link href="~/Styles/enumeration.css" rel="stylesheet" />
+<link href="~/Styles/popUpForm.css" rel="stylesheet" />
+
+<div class="all-orders-wrapper">
+    @{
+        var orders = Model as List<CarBooking.DAL.Entities.Order>;
+        int count = orders.Count();
+        int rowCount = count / 3;
+        int reminder = count % 3;
+        rowCount += reminder % 3 != 0 ? 1 : 0;
+        int index = 0;
+        for (int row = 1; row <= rowCount; row++)
+        {
+            <div class="row">
+                @for (int column = 1; column <= 3 && index < count; column++, index++)
+                {
+                    <div class="col-4">
+                        <div class="container item-wrapper">
+                            @{
+                                CarBooking.DAL.Entities.Order order = orders[index];
+
+                                <p>@string.Format("Title: {0}", order.Car.CarTitle)</p>
+
+                                <p>@string.Format("Price: {0}$", order.Price)</p>
+
+                                <p>@string.Format("Start Date: {0}", order.StartDate)</p>
+
+                                <p>@string.Format("Finish Date: {0}", order.FinishDate)</p>
+
+                                <p>@string.Format("Passport Number: {0}", order.PassportNumber)</p>
+
+                                <p>@string.Format("Need Driver: {0}", order.NeedDriver)</p>
+
+                                if (order.RepairPrice != null)
+                                {
+                                    <p>@string.Format("Repair Price: {0}$", order.RepairPrice)</p>
+                                }
+                                if (order.ManagerComment != null)
+                                {
+                                    <p>@string.Format("Manager Comment: {0}", order.ManagerComment)</p>
+                                }
+                                string status = string.Empty;
+                                switch (order.Status)
+                                {
+                                    case CarBooking.DAL.Entities.Status.Created:
+                                        status = "only created";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("Confirm", "Confirm", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        @*@Html.ActionLink("Refuse", "Refuse", new { id = order.ID }, new { @class = "btn btn-danger" });*@
+                                        <a href="#" onclick="refuseForm(@order.ID)" class="btn btn-danger">Refuse</a>
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.Finished:
+                                        status = "finished";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("OK", "Delete", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        <a href="#" onclick="toRepairForm(@order.ID)" class="btn btn-danger">Repair</a>
+                                        break;
+                                    case CarBooking.DAL.Entities.Status.RepairPaid:
+                                        status = "repair was paid";
+                                        <p>@string.Format("Status: {0}", status)</p>
+                                        @Html.ActionLink("OK", "Delete", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        break;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        if (count == 0)
+        {
+            <p class="alert alert-info">No one finished or only created order don't exist</p>
+        }
+    }
+    <div class="refuse-form-wrapper">
+        @using (Html.BeginForm("Refuse", "Orders", FormMethod.Post, new { @id = "refuse-form" }))
+        {
+            <div class="form-group">
+                @Html.Label("Leave message", new { @for = "comment" })
+                @Html.TextArea("comment", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="OK" />
+                <input type="button" class="btn btn-primary" value="Cancel" id="cancel-btn" />
+            </div>
+            @Html.Hidden("id")
+        }
+    </div>
+    <div class="to-repair-form-wrapper">
+        @using (Html.BeginForm("ToRepair", "Orders", FormMethod.Post, new { @id = "to-repair-form" }))
+        {
+        <div class="form-group">
+            @Html.Label("Repair price", new { @for = "repair-price" })
+            @Html.TextBox("repairPrice", null, new { @class = "form-control" })
+        </div>
+            <div class="form-group">
+                @Html.Label("Leave message", new { @for = "comment" })
+                @Html.TextArea("comment", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="OK" />
+                <input type="button" class="btn btn-primary" value="Cancel" id="cancel-btn" />
+            </div>
+            @Html.Hidden("id")
+        }
+    </div>
+</div>
+    <script>
+        const refuseFormWraper = document.querySelector('.refuse-form-wrapper');
+        const toRepairFormWraper = document.querySelector('.to-repair-form-wrapper');
+        document.querySelector('.refuse-form-wrapper #cancel-btn').addEventListener('click', function () {
+            refuseFormWraper.style.display = 'none';
+        });
+        document.querySelector('.to-repair-form-wrapper #cancel-btn').addEventListener('click', function () {
+            toRepairFormWraper.style.display = 'none';
+        });
+        function refuseForm(id) {
+            refuseFormWraper.style.display = 'block';
+            document.querySelector('.refuse-form-wrapper #id').value = id;
+        }
+        function toRepairForm(id) {
+            toRepairFormWraper.style.display = 'block';
+            document.querySelector('.to-repair-form-wrapper #id').value = id;
+        }
+
+    </script>

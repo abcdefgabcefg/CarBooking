@@ -1,7 +1,7 @@
 ﻿@model CarBooking.DAL.Entities.Order
 
 @{
-    ViewBag.Title = "Order";
+    ViewBag.Title = "Update";
 }
 
 @using (Html.BeginForm())
@@ -28,6 +28,11 @@
     <div class="form-group">
         @Html.LabelFor(order => order.NeedDriver, new { @class = "form-check-label" })
         @Html.EditorFor(order => order.NeedDriver)
+    </div>
+    <div class="form-group">
+        @Html.HiddenFor(order => order.ID)
+        @Html.HiddenFor(order => order.CarID)
+        @Html.HiddenFor(order => order.ClientID)
     </div>
     <div class="form-group">
         <input type="submit" class="btn btn-primary form-submit-button" value="OK" />

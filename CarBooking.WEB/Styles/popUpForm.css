@@ -1,0 +1,12 @@
+﻿.refuse-form-wrapper, .to-repair-form-wrapper {
+    width: 20%;
+    left: 40%;
+    right: 40%;
+    position: absolute;
+    box-shadow: 0 0 20px gray;
+    padding: 20px;
+    top: 100px;
+    display: none;
+    z-index: 1;
+    background: white;
+}
