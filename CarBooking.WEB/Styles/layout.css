@@ -4,55 +4,8 @@
     font-size: 14px;
 }
 
-.body-contaner, footer, .menu-contaner {
+.body-contaner, footer{
     margin: 0 5%;
-}
-
-header {
-    background: #232a34;
-    color: #ccc;
-    font-family: 'Coiny', cursive;
-}
-
-.menu-contaner{
-    display: flex;
-}
-
-ul.user-menu {
-    width: 80%;
-}
-ul.account-menu{
-   width: 20%;
-}
-
-.menu-contaner ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-    .menu-contaner ul a {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-        box-sizing: border-box;
-        padding: 20px;
-    }
-
-    .menu-contaner ul a:hover {
-        color: white;
-    }
-    
-    .menu-contaner ul a.first{
-        padding-left: 0;
-    }
-
-.menu-contaner ul span.user-name{
-    display: block;
-    padding: 20px;
-    cursor: context-menu;
-    color: white;
 }
 
 .error-message, .validation-summary-errors ul li {
@@ -71,9 +24,10 @@ ul.account-menu{
 
 .item-wrapper {
     margin: 20px;
-    padding: 60px 20px;
+    padding: 20px;
     border: 1px solid #ced4da;
     text-align: center;
+    overflow: auto;
 }
 
 .big-margin{
@@ -82,4 +36,12 @@ ul.account-menu{
 
 .small-margin{
     margin: 5px;
+}
+
+.side-padding{
+    margin: 0 20px;
+}
+
+header{
+    font-size: 16px;
 }

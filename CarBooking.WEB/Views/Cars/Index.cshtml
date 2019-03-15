@@ -17,24 +17,24 @@
             </select>
         </div>
     </div>
-    <div class="col-1">
+    <div class="col-1" id="arrows-wrapper">
         <div class="row">
             <div class="col-6">
                 <div class="form-group checkbox-wrapper">
                         <label for="checkboxUp" class="form-check-label checkbox-label">&uarr;</label>
-                        @Html.CheckBox("isSortDirectionUp", new { @class = "checkbox", @id="checkboxUp"})
+                        @Html.CheckBox("isSortDirectionUp", new { @class = "checkbox", @id = "checkboxUp" })
                         <div style="display:none;"></div>
                     </div>
                 </div>
             <div class="col-6">
                 <div class="form-group checkbox-wrapper" id="right-arrow">
                     <label for="checkboxDown" class="form-check-label checkbox-label">&darr;</label>
-                    @Html.CheckBox("isSortDirectionDown", new { @class = "checkbox", @id="checkboxDown"})
+                    @Html.CheckBox("isSortDirectionDown", new { @class = "checkbox", @id = "checkboxDown" })
                 </div>
             </div>
             </div>  
         </div>
-    <div class="col-9">
+    <div class="col-lg-9">
         <div class="form-group">
             @Html.TextBox("search", "", new { @class = "form-control" })
         </div>
@@ -55,51 +55,68 @@
 </div>
 }
 
-<div class="cars-wrapper">
-    @foreach (var car in Model)
-    {
-        <div class="car-contaner">
-            <div class="car-image-wrapper"><img src="@car.ImagePath" alt="@car.CarTitle" /></div>
-            <div class="car-data-wrapper">
-                <h3>@car.CarTitle</h3>
-                <p>@car.Price $ per h</p>
-                @if (car.IsLuxury)
+<div class="all-orders-wrapper">
+    @{
+        var cars = Model as List<CarBooking.DAL.Entities.Car>;
+        int count = cars.Count();
+        int rowCount = count / 2;
+        int reminder = count % 2;
+        rowCount += reminder != 0 ? 1 : 0;
+        int index = 0;
+        for (int row = 1; row <= rowCount; row++)
+        {
+            <div class="row">
+                @for (int column = 1; column <= 2 && index < count; column++, index++)
                 {
-                    <p>Luxury</p>
-                }
-                @if (Session["User"] as CarBooking.DAL.Entities.User != null)
-                {
-                    @Html.ActionLink("Order", "Create", "Orders", new { carID = car.ID }, null)
-                }
-                else
-                {
-                    @Html.ActionLink("Order", "LogIn", "Users", new { errorMessage = "You need to authorize" }, null)
-                }
+                    <div class="col-lg-6">
+                        <div class="container item-wrapper">
+                            @{
+                                var car = cars[index];
+                                <img src="@car.ImagePath" alt="@car.CarTitle"/>
+                                <h3>@car.CarTitle</h3>
+                                <p>@car.Price $ per h</p>
+                                if (car.IsLuxury)
+                                {
+                                    <p>Luxury</p>
+                                }
+                                if (Session["User"] as CarBooking.DAL.Entities.User != null)
+                                {
+                                    @Html.ActionLink("Order", "Create", "Orders", new { carID = car.ID }, new { @class="btn btn-primary"})
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Order", "LogIn", "Users", new { errorMessage = "You need to authorize" }, new { @class = "btn btn-primary" })
+                                }
+                            }
+                        </div>
+                    </div>
+                 }
             </div>
-        </div>
-    }
+        }
+     }
 </div>
 
-<script>
-    const checkboxes = document.querySelectorAll('.checkbox');
-    const checkboxWrappers = document.querySelectorAll('.checkbox-wrapper');
-    for (let checkbox of checkboxes) {
-        checkbox.addEventListener('click', (event) => {
-            for (let checkboxWrapper of checkboxWrappers) {
-                if (checkboxWrapper.innerHTML !== event.target.parentElement.innerHTML) {
-                    checkboxWrapper.classList.remove('checkbox-active');
-                }
+
+        <script>
+            const checkboxes = document.querySelectorAll('.checkbox');
+            const checkboxWrappers = document.querySelectorAll('.checkbox-wrapper');
+            for (let checkbox of checkboxes) {
+                checkbox.addEventListener('click', (event) => {
+                    for (let checkboxWrapper of checkboxWrappers) {
+                        if (checkboxWrapper.innerHTML !== event.target.parentElement.innerHTML) {
+                            checkboxWrapper.classList.remove('checkbox-active');
+                        }
+                    }
+                    for (let checkbox of checkboxes) {
+                        console.log(checkbox.checked);
+                        if (checkbox.id !== event.target.parentElement.childNodes[3].id) {
+                            checkbox.checked = false;
+                        }
+                    }
+                    event.target.parentElement.classList.toggle('checkbox-active');
+                });
             }
             for (let checkbox of checkboxes) {
-                console.log(checkbox.checked);
-                if (checkbox.id !== event.target.parentElement.childNodes[3].id) {
-                    checkbox.checked = false;
-                }
+                checkbox.checked = false;
             }
-            event.target.parentElement.classList.toggle('checkbox-active'); 
-        });
-    }
-    for (let checkbox of checkboxes) {
-        checkbox.checked = false;
-    }
-</script>
+        </script>

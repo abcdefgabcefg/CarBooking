@@ -7,7 +7,7 @@
 <link href="~/Styles/Cars/getAll.css" rel="stylesheet"/>
 
 <div class="container-fluid">
-    @Html.ActionLink("Create car", "Create", null, new { @class = "btn btn-light", @style = "margin-top:10px;"})
+    @Html.ActionLink("Create car", "Create", null, new { @class = "btn btn-primary", @style = "margin-top:10px;"})
     @{
         var cars = Model as List<CarBooking.DAL.Entities.Car>;
         int count = cars.Count / 3;
@@ -24,8 +24,8 @@
                     <p>Luxury: @cars[index].IsLuxury</p>
                     <p>Free: @cars[index].IsFree</p>
                     <p>Image Path: @cars[index].ImagePath</p>
-                    @Html.ActionLink("Edit", "Edit", new { id = cars[index].ID}, new {@class = "btn btn-light" })
-                    @Html.ActionLink("Delete", "Delete", new { id = cars[index].ID }, new { @class = "btn btn-light" })
+                    @Html.ActionLink("Edit", "Edit", new { id = cars[index].ID}, new {@class = "btn btn-primary" })
+                    @Html.ActionLink("Delete", "Delete", new { id = cars[index].ID }, new { @class = "btn btn-danger" })
                 </div>
                 }
             </div>

@@ -51,7 +51,7 @@ namespace CarBooking.DAL.Repositories
 
         public IEnumerable<Order> GetAll()
         {
-            foreach (var order in db.Orders)
+            foreach (var order in db.Orders.Include("Car"))
             {
                 if (order.FinishDate <= DateTime.Now)
                 {
@@ -61,7 +61,7 @@ namespace CarBooking.DAL.Repositories
                 {
                     MakeNotAnswered(order);
                 }
-                if(order.Status == Status.NotAnswered && order.StartDate.AddMinutes(30) < DateTime.Now)
+                if(order.Status == Status.NotAnswered && order.StartDate.AddMinutes(1) < DateTime.Now)
                 {
                     Delete(order.ID);
                 }
