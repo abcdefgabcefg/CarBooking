@@ -47,30 +47,30 @@
                                         status = "wait for manager answer";
                                         <p>@string.Format("Status: {0}", status)</p>
                                         @Html.ActionLink("Change", "Update", new { id = order.ID }, new { @class = "btn btn-primary" });
-                                        @Html.ActionLink("Cancel", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-danger">Cancel</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.Confirmed:
                                         status = "confirmed. Wait for payment";
                                         <p>@string.Format("Status: {0}", status)</p>
-                                        @Html.ActionLink("Pay", "Pay", new { id = order.ID }, new { @class = "btn btn-primary" });
-                                        @Html.ActionLink("Cancel", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        <a href="#" onclick="pay(@order.ID)" class="btn btn-primary">Pay</a>
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-danger">Cancel</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.NotAnswered:
                                         status = "time out. Manager not answered or you don't pay order. Please, try again";
                                         <p>@string.Format("Status: {0}", status)</p>
                                         @Html.ActionLink("Try Again", "Update", new { id = order.ID }, new { @class = "btn btn-primary" });
-                                        @Html.ActionLink("Delete", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-danger">Cancel</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.Refused:
                                         status = "refused. ";
                                         <p>@string.Format("Status: {0}", status)</p>
                                         @Html.ActionLink("Try Again", "Update", new { id = order.ID }, new { @class = "btn btn-primary" });
-                                        @Html.ActionLink("Delete", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-danger">Cancel</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.Paid:
                                         status = "paid. You can use car";
                                         <p>@string.Format("Status: {0}", status)</p>
-                                        @Html.ActionLink("Cancel", "Delete", new { id = order.ID }, new { @class = "btn btn-danger" });
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-danger">Cancel</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.Finished:
                                         status = "finished. Manager will check car.";
@@ -79,7 +79,7 @@
                                     case CarBooking.DAL.Entities.Status.WaitPaymentForRepair:
                                         status = "car need payment for repair.";
                                         <p>@string.Format("Status: {0}", status)</p>
-                                        @Html.ActionLink("Pay", "PayRepair", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        <a href="#" onclick="payRepair(@order.ID)" class="btn btn-primary">Pay</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.RepairPaid:
                                         status = "repair was paid. Manager will finish order";
@@ -98,3 +98,35 @@
                                 }
     }
 </div>
+<div class="delete-form-wrapper" style="display:none;">
+    @using (Html.BeginForm("Delete", "Orders", FormMethod.Post, new { @id = "delete-form" }))
+    {
+        @Html.Hidden("id")
+    }
+</div>
+<div class="pay-form-wrapper" style="display:none;">
+    @using (Html.BeginForm("Pay", "Orders", FormMethod.Post, new { @id = "pay-form" }))
+    {
+        @Html.Hidden("id")
+    }
+</div>
+<div class="pay-repair-form-wrapper" style="display:none;">
+    @using (Html.BeginForm("PayRepair", "Orders", FormMethod.Post, new { @id = "pay-repair-form" }))
+    {
+        @Html.Hidden("id")
+    }
+</div>
+<script>
+    function deleteOrder(id) {
+        document.querySelector("#delete-form #id").value = id;
+        document.querySelector("#delete-form").submit();
+    }
+    function pay(id) {
+        document.querySelector("#pay-form #id").value = id;
+        document.querySelector("#pay-form").submit();
+    }
+    function payRepair(id) {
+        document.querySelector("#pay-repair-form #id").value = id;
+        document.querySelector("#pay-repair-form").submit();
+    }
+</script>

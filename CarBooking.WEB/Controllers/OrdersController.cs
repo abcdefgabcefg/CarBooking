@@ -86,7 +86,7 @@ namespace CarBooking.WEB.Controllers
             return RedirectToAction("Index", "Cars");
         }
 
-        
+        [HttpPost]
         public ActionResult Confirm(int id)
         {
             var user = Session["User"] as User;
@@ -130,6 +130,7 @@ namespace CarBooking.WEB.Controllers
             return RedirectToAction("Index", "Cars");
         }
 
+        [HttpPost]
         // GET: Orders/Delete/5
         public ActionResult Delete(int id)
         {
@@ -159,6 +160,7 @@ namespace CarBooking.WEB.Controllers
             return RedirectToAction("Index", "Cars");
         }
 
+        [HttpPost]
         public ActionResult Pay(int id)
         {
             var user = Session["User"] as User;
@@ -238,6 +240,7 @@ namespace CarBooking.WEB.Controllers
             return RedirectToAction("Index", "Cars");
         }
 
+        [HttpPost]
         public ActionResult PayRepair(int id)
         {
             if (Session["User"] as User != null)

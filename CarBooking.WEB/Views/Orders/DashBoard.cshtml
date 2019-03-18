@@ -51,20 +51,19 @@
                                     case CarBooking.DAL.Entities.Status.Created:
                                         status = "only created";
                                         <p>@string.Format("Status: {0}", status)</p>
-                                        @Html.ActionLink("Confirm", "Confirm", new { id = order.ID }, new { @class = "btn btn-primary" });
-                                        @*@Html.ActionLink("Refuse", "Refuse", new { id = order.ID }, new { @class = "btn btn-danger" });*@
+                                        <a href="#" onclick="confirm(@order.ID)" class="btn btn-primary">Confirm</a>
                                         <a href="#" onclick="refuseForm(@order.ID)" class="btn btn-danger">Refuse</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.Finished:
                                         status = "finished";
                                         <p>@string.Format("Status: {0}", status)</p>
-                                        @Html.ActionLink("OK", "Delete", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-primary">OK</a>
                                         <a href="#" onclick="toRepairForm(@order.ID)" class="btn btn-danger">Repair</a>
                                         break;
                                     case CarBooking.DAL.Entities.Status.RepairPaid:
                                         status = "repair was paid";
                                         <p>@string.Format("Status: {0}", status)</p>
-                                        @Html.ActionLink("OK", "Delete", new { id = order.ID }, new { @class = "btn btn-primary" });
+                                        <a href="#" onclick="deleteOrder(@order.ID)" class="btn btn-primary">OK</a>
                                         break;
                                 }
                             }
@@ -78,6 +77,18 @@
             <p class="alert alert-info">No one finished or only created order don't exist</p>
         }
     }
+    <div class="confirm-form-wrapper" style="display:none;">
+        @using(Html.BeginForm("Confirm", "Orders", FormMethod.Post, new { @id = "confirm-form" }))
+        {
+            @Html.Hidden("id")
+        }
+    </div>
+    <div class="delete-form-wrapper" style="display:none;">
+        @using(Html.BeginForm("Delete", "Orders", FormMethod.Post, new { @id = "delete-form" }))
+        {
+            @Html.Hidden("id")
+        }
+    </div>
     <div class="refuse-form-wrapper">
         @using (Html.BeginForm("Refuse", "Orders", FormMethod.Post, new { @id = "refuse-form" }))
         {
@@ -98,6 +109,7 @@
         <div class="form-group">
             @Html.Label("Repair price", new { @for = "repair-price" })
             @Html.TextBox("repairPrice", null, new { @class = "form-control" })
+            <span id="repair-price-error" class="error-message"></span>
         </div>
             <div class="form-group">
                 @Html.Label("Leave message", new { @for = "comment" })
@@ -120,6 +132,27 @@
         document.querySelector('.to-repair-form-wrapper #cancel-btn').addEventListener('click', function () {
             toRepairFormWraper.style.display = 'none';
         });
+        document.querySelector('#to-repair-form').addEventListener('submit', (event) => {
+            let result = true;
+
+            let price = document.querySelector('#repairPrice').value;
+            let errorMes = document.querySelector('#repair-price-error');
+            errorMes.innerHTML = '';
+
+            if (price === '') {
+                result = false;
+                errorMes.innerHTML = 'Required field';
+            }
+            else if (!/^\d+$/.test(price)) {
+                result = false;
+                errorMes.innerHTML = 'Only numbers allow';
+                console.log(price);
+            }
+
+            if (!result) {
+                event.preventDefault();
+            }
+        });
         function refuseForm(id) {
             refuseFormWraper.style.display = 'block';
             document.querySelector('.refuse-form-wrapper #id').value = id;
@@ -128,5 +161,12 @@
             toRepairFormWraper.style.display = 'block';
             document.querySelector('.to-repair-form-wrapper #id').value = id;
         }
-
+        function confirm(id) {
+            document.querySelector('#confirm-form #id').value = id;
+            document.querySelector('#confirm-form').submit();
+        }
+        function deleteOrder(id) {
+            document.querySelector("#delete-form #id").value = id;
+            document.querySelector("#delete-form").submit();
+        }
     </script>
